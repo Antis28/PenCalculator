@@ -37,11 +37,11 @@ namespace PenCalculator.ViewModels
         private void OnCalculateCommandExecuted(object p)
         {
             // сумма за период
-            double paySizeOnPeriod = 0;
             double payTotal = 0;
 
             foreach (var group in Groups)
             {
+                double paySizeOnPeriod = 0;
                 if (Math.Abs(group.PaySizeFull - 0.001) < 0.01)
                 {
                     continue;
@@ -137,21 +137,21 @@ namespace PenCalculator.ViewModels
                     PaySizeFull = 10_000
                 },
 
-                //new PaymentForPeriod
-                //{
-                //    ID = 2,
-                //    StartDate = DateTime.Parse("01.04.2023"),
-                //    EndDate = DateTime.Parse("31.07.2023"),
-                //    PaySizeFull = 10_000
-                //},
+                new PaymentForPeriod
+                {
+                    ID = 2,
+                    StartDate = DateTime.Parse("01.04.2023"),
+                    EndDate = DateTime.Parse("31.05.2023"),
+                    PaySizeFull = 10_000
+                },
 
-                //new PaymentForPeriod
-                //{
-                //    ID = 3,
-                //    StartDate = DateTime.Parse("01.08.2023"),
-                //    EndDate = DateTime.Parse("31.12.2023"),
-                //    PaySizeFull = 10_000
-                //},
+                new PaymentForPeriod
+                {
+                    ID = 3,
+                    StartDate = DateTime.Parse("01.06.2023"),
+                    EndDate = DateTime.Parse("31.12.2023"),
+                    PaySizeFull = 10_000
+                },
 
                 //new PaymentForPeriod
                 //{
