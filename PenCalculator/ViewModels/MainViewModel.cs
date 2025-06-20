@@ -38,7 +38,7 @@ namespace PenCalculator.ViewModels
         {
             // сумма за период
             double paySizeOnPeriod = 0;
-            double paySizeOnPeriod2 = 0;
+            double payTotal = 0;
 
             foreach (var group in Groups)
             {
@@ -61,29 +61,26 @@ namespace PenCalculator.ViewModels
                 var m = r.Months;
                 var d = r.Days;
 
-                if (group.StartDate != startDay || group.EndDate != endDay)
+                // Для ячейки первого месяца
+                if (group.StartDate != startDay)
                 {
-                    paySizeOnPeriod += ((double)group.PaySizeFull / daysInMonthForStart) * d;
+                    paySizeOnPeriod = ((double)group.PaySizeFull / daysInMonthForStart) * d;
                 }
-                //if ()
-                //{
-                //    paySizeOnPeriod2 += ((double)group.PaySizeFull / endDay.Day) * d;
-                //}
-                if (Math.Abs(paySizeOnPeriod - paySizeOnPeriod2) < 0.0001)
+                // Для ячейки последнего месяца
+                if (group.EndDate != endDay)
                 {
-                    MessageBox.Show($" {paySizeOnPeriod} = {paySizeOnPeriod2}");
+                    paySizeOnPeriod = ((double)group.PaySizeFull / endDay.Day) * d;
                 }
 
-                paySizeOnPeriod += group.PaySizeFull * m; 
-                group.PaySizeOnPeriod = paySizeOnPeriod;
 
-                
-                
-                group.PaySizeFull = 1;
-                
+                paySizeOnPeriod += group.PaySizeFull * m;
+                payTotal += paySizeOnPeriod;
+
+                group.PaySizeOnPeriod = Math.Round(paySizeOnPeriod, 2);
+
             }
 
-            PayTotal = Math.Round(paySizeOnPeriod, 2);
+            PayTotal = Math.Round(payTotal, 2);
         }
 
         #endregion
@@ -140,52 +137,52 @@ namespace PenCalculator.ViewModels
                     PaySizeFull = 10_000
                 },
 
-                new PaymentForPeriod
-                {
-                    ID = 2,
-                    StartDate = DateTime.Parse("01.04.2023"),
-                    EndDate = DateTime.Parse("31.07.2023"),
-                    PaySizeFull = 10_000
-                },
+                //new PaymentForPeriod
+                //{
+                //    ID = 2,
+                //    StartDate = DateTime.Parse("01.04.2023"),
+                //    EndDate = DateTime.Parse("31.07.2023"),
+                //    PaySizeFull = 10_000
+                //},
 
-                new PaymentForPeriod
-                {
-                    ID = 3,
-                    StartDate = DateTime.Parse("01.08.2023"),
-                    EndDate = DateTime.Parse("31.12.2023"),
-                    PaySizeFull = 10_000
-                },
+                //new PaymentForPeriod
+                //{
+                //    ID = 3,
+                //    StartDate = DateTime.Parse("01.08.2023"),
+                //    EndDate = DateTime.Parse("31.12.2023"),
+                //    PaySizeFull = 10_000
+                //},
 
-                new PaymentForPeriod
-                {
-                    ID = 4,
-                    StartDate = DateTime.Parse("01.01.2024"),
-                    EndDate = DateTime.Parse("31.03.2024"),
-                    PaySizeFull = 10_000
-                },
+                //new PaymentForPeriod
+                //{
+                //    ID = 4,
+                //    StartDate = DateTime.Parse("01.01.2024"),
+                //    EndDate = DateTime.Parse("31.03.2024"),
+                //    PaySizeFull = 10_000
+                //},
 
-                new PaymentForPeriod
-                {
-                    ID = 5,
-                    StartDate = DateTime.Parse("01.04.2024"),
-                    EndDate = DateTime.Parse("31.07.2024"),
-                    PaySizeFull = 10_000
-                },
+                //new PaymentForPeriod
+                //{
+                //    ID = 5,
+                //    StartDate = DateTime.Parse("01.04.2024"),
+                //    EndDate = DateTime.Parse("31.07.2024"),
+                //    PaySizeFull = 10_000
+                //},
 
-                new PaymentForPeriod
-                {
-                    ID = 6,
-                    StartDate = DateTime.Parse("01.08.2024"),
-                    EndDate = DateTime.Parse("31.12.2024"),
-                    PaySizeFull = 10_000
-                },
+                //new PaymentForPeriod
+                //{
+                //    ID = 6,
+                //    StartDate = DateTime.Parse("01.08.2024"),
+                //    EndDate = DateTime.Parse("31.12.2024"),
+                //    PaySizeFull = 10_000
+                //},
 
-                new PaymentForPeriod
-                {
-                    StartDate = DateTime.Parse("01.01.2025"),
-                    EndDate = DateTime.Parse("28.02.2025"),
-                    PaySizeFull = 10_000
-                }
+                //new PaymentForPeriod
+                //{
+                //    StartDate = DateTime.Parse("01.01.2025"),
+                //    EndDate = DateTime.Parse("28.02.2025"),
+                //    PaySizeFull = 10_000
+                //}
 
             };
 

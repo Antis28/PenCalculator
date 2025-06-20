@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace PenCalculator.Models
 {
-    internal class PaymentForPeriod : ViewModel
+    internal class PaymentForPeriod : Model
     {
         public int ID { get; set; }
         public DateTime StartDate { get; set; }

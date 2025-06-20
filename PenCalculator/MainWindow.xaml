@@ -39,7 +39,7 @@
                                         Mode=TwoWay,
                                         TargetNullValue={x:Static System:DateTime.Now}}"/>
                         <TextBlock Text="Размер:" Margin="5,0" VerticalAlignment="Center"/>
-                        <TextBox Text="{Binding PaySizeFull, Mode=TwoWay}" Margin="5,0" VerticalAlignment="Center"/>
+                        <TextBox Text="{Binding PaySizeFull, StringFormat={}{0:F2}, Mode=TwoWay}" Margin="5,0" VerticalAlignment="Center"/>
                         <Button Style="{StaticResource PrimaryButton}" Content="Добавить" DataContext="{StaticResource MainViewModel}"   Command="{Binding AddPeriodCommand}"/>
                         <Button Style="{StaticResource DangerButton}" Content="Удалить"   DataContext="{StaticResource MainViewModel}"  Command="{Binding RemovePeriodCommand}"/>
                         <TextBox Text="{Binding PaySizeOnPeriod, Mode=TwoWay }"   Margin="5,0" VerticalAlignment="Center"/>
