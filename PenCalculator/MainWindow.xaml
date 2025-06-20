@@ -24,7 +24,8 @@
         </Grid.RowDefinitions>
 
         <ListBox ItemsSource="{Binding Groups, UpdateSourceTrigger=PropertyChanged}" 
-                 SelectedItem="{Binding SelectedGroup}">
+                 SelectedItem="{Binding SelectedGroup}"
+                 SelectionMode="Single">
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type models:PaymentForPeriod}">
                     <StackPanel Orientation="Horizontal" Height="30" VerticalAlignment="Top " Margin="5">
@@ -32,17 +33,19 @@
                         <DatePicker  SelectedDate="{Binding
                                         Path=StartDate,
                                         Mode=TwoWay,
+                                        UpdateSourceTrigger=PropertyChanged,
                                         TargetNullValue={x:Static System:DateTime.Now}}"/>
                         <TextBlock Text="ПО:" Margin="5,0" VerticalAlignment="Center"/>
                         <DatePicker  SelectedDate="{Binding
                                         Path=EndDate,
                                         Mode=TwoWay,
+                                        UpdateSourceTrigger=PropertyChanged,
                                         TargetNullValue={x:Static System:DateTime.Now}}"/>
                         <TextBlock Text="Размер:" Margin="5,0" VerticalAlignment="Center"/>
                         <TextBox Text="{Binding PaySizeFull, StringFormat={}{0:F2}, Mode=TwoWay}" Margin="5,0" VerticalAlignment="Center"/>
                         <Button Style="{StaticResource PrimaryButton}" Content="Добавить" DataContext="{StaticResource MainViewModel}"   Command="{Binding AddPeriodCommand}"/>
                         <Button Style="{StaticResource DangerButton}" Content="Удалить"   DataContext="{StaticResource MainViewModel}"  Command="{Binding RemovePeriodCommand}"/>
-                        <TextBox Text="{Binding PaySizeOnPeriod, Mode=TwoWay }"   Margin="5,0" VerticalAlignment="Center"/>
+                        <TextBox Text="{Binding PaySizeOnPeriod, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:F2}, Mode=TwoWay }"   Margin="5,0" VerticalAlignment="Center"/>
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
@@ -61,6 +64,13 @@
             <TextBox Text="10000" Margin="5,0" VerticalAlignment="Center"/>
 
             <Button Content="Добавить" Style="{StaticResource PrimaryButton}"/>
+        </StackPanel>
+        <StackPanel Grid.Row="2" Orientation="Vertical" HorizontalAlignment="Left">
+            <TextBlock Text="За период:" FontWeight="Bold"/>
+            <TextBlock Text="{Binding SelectedGroup.PaySizeOnPeriod}"/>
+
+            <TextBlock Text="За полный месяц:" FontWeight="Bold"/>
+            <TextBlock Text="{Binding SelectedGroup.PaySizeFull}"/>
         </StackPanel>
     </Grid>
 </Window>
