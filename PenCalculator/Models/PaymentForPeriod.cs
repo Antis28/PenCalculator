@@ -3,6 +3,7 @@ using NodaTime;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -106,7 +107,14 @@ namespace PenCalculator.Models
 
 
             paySizeOnPeriod += PaySizeFull * m;
-            
+
+            // Изменение культуры (локали) для замены разделителя на пробел
+            var cultureWithSpaceSeparator = new CultureInfo("ru-RU");
+            cultureWithSpaceSeparator.NumberFormat.NumberGroupSeparator = " ";
+            PaySizeOnPeriodString = Math.Round(paySizeOnPeriod,2).ToString("N", cultureWithSpaceSeparator);
+
+            OnPropertyChanged(nameof(PaySizeOnPeriodString));
+
             return paySizeOnPeriod;
         }
     }

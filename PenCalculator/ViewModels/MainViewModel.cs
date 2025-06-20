@@ -41,43 +41,7 @@ namespace PenCalculator.ViewModels
 
             foreach (var group in Groups)
             {
-                double paySizeOnPeriod = 0;
-                if (Math.Abs(group.PaySizeFull - 0.001) < 0.01)
-                {
-                    continue;
-                }
-                // первый день 1-го месяца
-                DateTime startDay = new DateTime(group.StartDate.Year, group.StartDate.Month, 1);
-                // кол. дней в первом месяце
-                int daysInMonthForStart = DateTime.DaysInMonth(group.StartDate.Year, group.StartDate.Month);
-                // последний день последнего месяца
-                // кол. дней в последнем месяце
-                int daysInMonthForEnd = DateTime.DaysInMonth(group.EndDate.Year, group.EndDate.Month);
-                DateTime endDay = new DateTime(group.EndDate.Year, group.EndDate.Month, daysInMonthForEnd);
-
-                LocalDate date1 = new LocalDate(group.StartDate.Year, group.StartDate.Month, group.StartDate.Day);
-                LocalDate date2 = new LocalDate(group.EndDate.Year, group.EndDate.Month, group.EndDate.Day);
-                var r = date2 + Period.FromDays(1) - date1;
-                var m = r.Months;
-                var d = r.Days;
-
-                // Для ячейки первого месяца
-                if (group.StartDate != startDay)
-                {
-                    paySizeOnPeriod = ((double)group.PaySizeFull / daysInMonthForStart) * d;
-                }
-                // Для ячейки последнего месяца
-                if (group.EndDate != endDay)
-                {
-                    paySizeOnPeriod = ((double)group.PaySizeFull / endDay.Day) * d;
-                }
-
-
-                paySizeOnPeriod += group.PaySizeFull * m;
-                payTotal += paySizeOnPeriod;
-
-                group.PaySizeOnPeriod = Math.Round(paySizeOnPeriod, 2);
-
+                payTotal += group.PaySizeOnPeriod;
             }
 
             PayTotal = Math.Round(payTotal, 2);

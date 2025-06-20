@@ -45,7 +45,7 @@
                         <TextBox Text="{Binding PaySizeFull, StringFormat={}{0:F2}, Mode=TwoWay}" Margin="5,0" VerticalAlignment="Center"/>
                         <Button Style="{StaticResource PrimaryButton}" Content="Добавить" DataContext="{StaticResource MainViewModel}"   Command="{Binding AddPeriodCommand}"/>
                         <Button Style="{StaticResource DangerButton}" Content="Удалить"   DataContext="{StaticResource MainViewModel}"  Command="{Binding RemovePeriodCommand}"/>
-                        <TextBox Text="{Binding PaySizeOnPeriod, UpdateSourceTrigger=PropertyChanged, StringFormat={}{0:F2}, Mode=TwoWay }"   Margin="5,0" VerticalAlignment="Center"/>
+                        <TextBox Text="{Binding PaySizeOnPeriodString, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay }"   Margin="5,0" VerticalAlignment="Center"/>
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
