@@ -47,6 +47,14 @@ namespace PenCalculator.Models
             set
             {
                 _endDate = value;
+                if (_endDate < _startDate)
+                {
+                    // первый день 1-го месяца
+                    DateTime startDay = new DateTime(_endDate.Year, _endDate.Month, 1);
+
+                    StartDate = startDay;
+                    OnPropertyChanged(nameof(StartDate));
+                }
                 CalcPaySizeOnPeriod();
                 OnPropertyChanged(nameof(PaySizeOnPeriod));
             }

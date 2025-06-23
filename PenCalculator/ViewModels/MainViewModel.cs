@@ -19,14 +19,23 @@ namespace PenCalculator.ViewModels
         private string _PayTotal;
         public string PayTotal { get => _PayTotal; set => Set(ref _PayTotal, value); }
 
-        public ObservableCollection<PaymentForPeriod> Groups { get; }
-        #region SelectedGroup : Group - Выбранная группа
+        /// <summary>
+        /// Положено к выплате
+        /// </summary>
+        public ObservableCollection<PaymentForPeriod> PaymentPurposes { get; }
+
+        #region SelectedPaymentPurposes : Group - Выбранная группа
         ///<summary>Выбранная группа</summary>
-        private PaymentForPeriod _SelectedGroup;
+        private PaymentForPeriod _SelectedPaymentPurposes;
         ///<summary>Выбранная группа</summary>
-        public PaymentForPeriod SelectedGroup { get => _SelectedGroup; set => Set(ref _SelectedGroup, value); }
-        
+        public PaymentForPeriod SelectedPaymentPurposes { get => _SelectedPaymentPurposes; set => Set(ref _SelectedPaymentPurposes, value); }
+
         #endregion
+
+        /// <summary>
+        /// Выплачено
+        /// </summary>
+        public ObservableCollection<double> PaidOut { get; }
 
 
         #region CalculateCommand
@@ -38,7 +47,7 @@ namespace PenCalculator.ViewModels
             // сумма за период
             double payTotal = 0;
 
-            foreach (var group in Groups)
+            foreach (var group in PaymentPurposes)
             {
                 payTotal += group.PaySizeOnPeriod;
             }
@@ -55,14 +64,14 @@ namespace PenCalculator.ViewModels
         private void OnAddPeriodCommandExecuted(object p)
         {
             double paySize = 0;
-            var last = Groups.LastOrDefault();
-            Groups.Add(new PaymentForPeriod()
+            var last = PaymentPurposes.LastOrDefault();
+            PaymentPurposes.Add(new PaymentForPeriod()
             {
                 StartDate = last.StartDate.AddMonths(1),
                 EndDate = last.EndDate.AddMonths(4),
                 PaySizeFull = paySize,
             });
-            OnPropertyChanged(nameof(Groups));
+            OnPropertyChanged(nameof(PaymentPurposes));
         }
 
         #endregion
@@ -73,25 +82,45 @@ namespace PenCalculator.ViewModels
 
         private void OnRemovePeriodCommandExecuted(object p)
         {
-            var id = Groups.IndexOf(SelectedGroup);
+            var id = PaymentPurposes.IndexOf(SelectedPaymentPurposes);
 
             if (id == 0)
             {
                 return;
             }
-            Groups.Remove(SelectedGroup);
-            SelectedGroup = id - 1 > -1 ? Groups[id - 1] : Groups[0];
+            PaymentPurposes.Remove(SelectedPaymentPurposes);
+            SelectedPaymentPurposes = id - 1 > -1 ? PaymentPurposes[id - 1] : PaymentPurposes[0];
 
         }
 
         #endregion
+
+        #region AddPaidOutCommand
+        public ICommand AddPaidOutCommand { get; }
+        private bool CanAddPaidOutCommandExecute(object p) => true;
+
+        private void OnAddPaidOutCommandExecuted(object p)
+        {
+            double paySize = 0;
+            var last = PaymentPurposes.LastOrDefault();
+            PaymentPurposes.Add(new PaymentForPeriod()
+            {
+                StartDate = last.StartDate.AddMonths(1),
+                EndDate = last.EndDate.AddMonths(4),
+                PaySizeFull = paySize,
+            });
+            OnPropertyChanged(nameof(PaymentPurposes));
+        }
+
+        #endregion
+        
 
         public MainViewModel()
         {
             // Создаем дочернюю view-model и даём ей ссылку на главную модель.
             // CountriesStatisticsVM = new CountriesStatisticsViewModel(this);
 
-            Groups = new ObservableCollection<PaymentForPeriod>
+            PaymentPurposes = new ObservableCollection<PaymentForPeriod>
             {
                 new PaymentForPeriod
                 {
@@ -148,6 +177,11 @@ namespace PenCalculator.ViewModels
                 //    PaySizeFull = 10_000
                 //}
 
+            };
+            PaidOut = new ObservableCollection<double>
+            {
+                500,
+                200,
             };
 
             CalculateCommand =

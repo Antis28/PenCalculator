@@ -5,11 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:PenCalculator"
         mc:Ignorable="d"
-        FontSize="16"
+        FontSize="14"
         xmlns:vm="clr-namespace:PenCalculator.ViewModels"
         xmlns:models="clr-namespace:PenCalculator.Models"
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         Title="MainWindow" Height="550" Width="800"
+        
         >
     <!--<Button Style="{StaticResource PrimaryButton}" Content="Добавить"  Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.AddPeriodCommand}"/>-->
     <Window.DataContext>
@@ -23,9 +24,13 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-
-        <ListBox Grid.Row="1" ItemsSource="{Binding Groups, UpdateSourceTrigger=PropertyChanged}" 
-                 SelectedItem="{Binding SelectedGroup}"
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
+            <Button Command="{Binding CalculateCommand}" Width="100" Height="25"  Style="{StaticResource DangerButton}" HorizontalAlignment="Center" Content="Calculate" Margin="5,5"/>
+            <Button Style="{StaticResource PrimaryButton}" Width="100" Height="25"  HorizontalAlignment="Center" Content="Добавить"  Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.AddPeriodCommand}" />
+            <Button Style="{StaticResource DangerButton}" Width="100" Height="25"   HorizontalAlignment="Center" Content="Удалить"    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.RemovePeriodCommand}" Margin="5,5"/>
+        </StackPanel>
+        <ListBox Grid.Row="1" ItemsSource="{Binding PaymentPurposes, UpdateSourceTrigger=PropertyChanged}" 
+                 SelectedItem="{Binding SelectedPaymentPurposes}"
                  SelectionMode="Single">
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type models:PaymentForPeriod}">
@@ -52,31 +57,14 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <StackPanel Grid.Row="0" Orientation="Horizontal">
-            <Button Command="{Binding CalculateCommand}" Width="100" Height="25"  Style="{StaticResource DangerButton}" HorizontalAlignment="Center" Content="Calculate" Margin="5,5"/>
-            <Button Style="{StaticResource PrimaryButton}" Width="100" Height="25"  HorizontalAlignment="Center" Content="Добавить"  Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.AddPeriodCommand}" />
-            <Button Style="{StaticResource DangerButton}" Width="100" Height="25"   HorizontalAlignment="Center" Content="Удалить"    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.RemovePeriodCommand}" Margin="5,5"/>
-       </StackPanel>
-        <StackPanel Grid.Row="2">
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Height="30">
             <TextBlock Text="Сумма:"/>
             <TextBox Text="{Binding PayTotal, StringFormat={}{0:F2}}"></TextBox>
         </StackPanel>
-        <StackPanel Grid.Row="2" Visibility="Collapsed" Orientation="Horizontal" Height="30" VerticalAlignment="Top " Margin="5">
-            <Label Content="C:" Margin="5,0" VerticalAlignment="Center"/>
-            <DatePicker  />
-            <Label Content="ПО:" Margin="5,0" VerticalAlignment="Center"/>
-            <DatePicker  />
-            <Label Content="Размер:" FontSize="5" Margin="5,0" VerticalAlignment="Center"/>
-            <TextBox Text="10000" Margin="5,0" VerticalAlignment="Center"/>
-
-            <Button Content="Добавить" Style="{StaticResource PrimaryButton}"/>
-        </StackPanel>
-        <StackPanel Grid.Row="3" Orientation="Vertical" HorizontalAlignment="Left">
-            <TextBlock Text="За период:" FontWeight="Bold"/>
-            <TextBlock Text="{Binding SelectedGroup.PaySizeOnPeriod}"/>
-
-            <TextBlock Text="За полный месяц:" FontWeight="Bold"/>
-            <TextBlock Text="{Binding SelectedGroup.PaySizeFull}"/>
+        <StackPanel Grid.Row="3" Orientation="Horizontal">
+            <Button Command="{Binding CalculateCommand}" Width="100" Height="25"  Style="{StaticResource DangerButton}" HorizontalAlignment="Center" Content="Calculate" Margin="5,5"/>
+            <Button Style="{StaticResource PrimaryButton}" Width="100" Height="25"  HorizontalAlignment="Center" Content="Добавить"  Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.AddPeriodCommand}" />
+            <Button Style="{StaticResource DangerButton}" Width="100" Height="25"   HorizontalAlignment="Center" Content="Удалить"    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.RemovePeriodCommand}" Margin="5,5"/>
         </StackPanel>
     </Grid>
 </Window>
