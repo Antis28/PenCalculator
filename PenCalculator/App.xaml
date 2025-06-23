@@ -8,6 +8,7 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/Resources/Styles/Control.xaml"></ResourceDictionary>
                 <ResourceDictionary Source="/Resources/Styles/Buttons.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="/Resources/Styles/TextEdit.xaml"></ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
 
