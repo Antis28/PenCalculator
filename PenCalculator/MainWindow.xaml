@@ -9,26 +9,27 @@
         xmlns:vm="clr-namespace:PenCalculator.ViewModels"
         xmlns:models="clr-namespace:PenCalculator.Models"
         xmlns:System="clr-namespace:System;assembly=mscorlib"
-        DataContext="{vm:MainViewModel}"
         Title="MainWindow" Height="550" Width="800"
         >
-    <Window.Resources>
-        <vm:MainViewModel x:Key="MainViewModel"/>
-    </Window.Resources>
-
+    <!--<Button Style="{StaticResource PrimaryButton}" Content="Добавить"  Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.AddPeriodCommand}"/>-->
+    <Window.DataContext>
+        <vm:MainViewModel/>
+    </Window.DataContext>
+    
     <Grid >
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <ListBox ItemsSource="{Binding Groups, UpdateSourceTrigger=PropertyChanged}" 
+        <ListBox Grid.Row="1" ItemsSource="{Binding Groups, UpdateSourceTrigger=PropertyChanged}" 
                  SelectedItem="{Binding SelectedGroup}"
                  SelectionMode="Single">
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type models:PaymentForPeriod}">
-                    <StackPanel Orientation="Horizontal" Height="30" VerticalAlignment="Top " Margin="5">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Top " Margin="5">
                         <TextBlock Text="C:" Margin="5,0" VerticalAlignment="Center"/>
                         <DatePicker  SelectedDate="{Binding
                                         Path=StartDate,
@@ -41,17 +42,22 @@
                                         Mode=TwoWay,
                                         UpdateSourceTrigger=PropertyChanged,
                                         TargetNullValue={x:Static System:DateTime.Now}}"/>
+                        <TextBlock Text="Период:" Margin="5,0" VerticalAlignment="Center"/>
+                        <TextBlock Text="{Binding DateLength}" Margin="5,0" VerticalAlignment="Center"/>
                         <TextBlock Text="Размер:" Margin="5,0" VerticalAlignment="Center"/>
                         <TextBox Text="{Binding PaySizeFull, StringFormat={}{0:F2}, Mode=TwoWay}" Margin="5,0" VerticalAlignment="Center"/>
-                        <Button Style="{StaticResource PrimaryButton}" Content="Добавить" DataContext="{StaticResource MainViewModel}"   Command="{Binding AddPeriodCommand}"/>
-                        <Button Style="{StaticResource DangerButton}" Content="Удалить"   DataContext="{StaticResource MainViewModel}"  Command="{Binding RemovePeriodCommand}"/>
+                       
                         <TextBox Text="{Binding PaySizeOnPeriodString, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay }"   Margin="5,0" VerticalAlignment="Center"/>
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <StackPanel Grid.Row="1">
-            <Button Command="{Binding CalculateCommand}" Style="{StaticResource DangerButton}" HorizontalAlignment="Center" Content="Calculate" Click="Button_Click"></Button>
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
+            <Button Command="{Binding CalculateCommand}" Width="100" Height="25"  Style="{StaticResource DangerButton}" HorizontalAlignment="Center" Content="Calculate" Margin="5,5"/>
+            <Button Style="{StaticResource PrimaryButton}" Width="100" Height="25"  HorizontalAlignment="Center" Content="Добавить"  Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.AddPeriodCommand}" />
+            <Button Style="{StaticResource DangerButton}" Width="100" Height="25"   HorizontalAlignment="Center" Content="Удалить"    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.RemovePeriodCommand}" Margin="5,5"/>
+       </StackPanel>
+        <StackPanel Grid.Row="2">
             <TextBlock Text="Сумма:"/>
             <TextBox Text="{Binding PayTotal, StringFormat={}{0:F2}}"></TextBox>
         </StackPanel>
@@ -65,7 +71,7 @@
 
             <Button Content="Добавить" Style="{StaticResource PrimaryButton}"/>
         </StackPanel>
-        <StackPanel Grid.Row="2" Orientation="Vertical" HorizontalAlignment="Left">
+        <StackPanel Grid.Row="3" Orientation="Vertical" HorizontalAlignment="Left">
             <TextBlock Text="За период:" FontWeight="Bold"/>
             <TextBlock Text="{Binding SelectedGroup.PaySizeOnPeriod}"/>
 

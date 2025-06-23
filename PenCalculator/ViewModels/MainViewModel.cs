@@ -25,9 +25,7 @@ namespace PenCalculator.ViewModels
         private PaymentForPeriod _SelectedGroup;
         ///<summary>Выбранная группа</summary>
         public PaymentForPeriod SelectedGroup { get => _SelectedGroup; set => Set(ref _SelectedGroup, value); }
-
-
-
+        
         #endregion
 
 
@@ -62,8 +60,9 @@ namespace PenCalculator.ViewModels
             {
                 StartDate = last.StartDate.AddMonths(1),
                 EndDate = last.EndDate.AddMonths(4),
+                PaySizeFull = paySize,
             });
-
+            OnPropertyChanged(nameof(Groups));
         }
 
         #endregion

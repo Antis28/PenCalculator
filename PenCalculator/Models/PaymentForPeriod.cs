@@ -23,6 +23,17 @@ namespace PenCalculator.Models
             set
             {
                 _startDate = value;
+                if (_endDate < _startDate)
+                {
+                    // последний день последнего месяца
+                    // кол. дней в последнем месяце
+                    int daysInMonthForEnd = DateTime.DaysInMonth(_startDate.Year, _startDate.Month);
+                    DateTime endDay = new DateTime(_startDate.Year, _startDate.Month, daysInMonthForEnd);
+
+                    EndDate = endDay;
+                    OnPropertyChanged(nameof(EndDate));
+                }
+
                 CalcPaySizeOnPeriod();
                 OnPropertyChanged(nameof(PaySizeOnPeriod));
 
@@ -60,8 +71,8 @@ namespace PenCalculator.Models
         #endregion
 
 
-            #region PaySizeOnPeriod : double - Сумма за период  
-            ///<summary>Сумма за период </summary>
+        #region PaySizeOnPeriod : double - Сумма за период  
+        ///<summary>Сумма за период </summary>
         private double _PaySizeOnPeriod;
 
         ///<summary>Сумма за период </summary>
@@ -96,6 +107,14 @@ namespace PenCalculator.Models
         #endregion
 
 
+        #region DateLength : string - Длинна периода в месяцах
+        ///<summary>Длинна периода в месяцах</summary>
+        private string _DateLength;
+        ///<summary>Длинна периода в месяцах</summary>
+        public string DateLength { get => _DateLength; set => Set(ref _DateLength, value); }
+        #endregion
+
+
 
         double CalcPaySizeOnPeriod()
         {
@@ -118,6 +137,8 @@ namespace PenCalculator.Models
             var r = (date2 + Period.FromDays(1)) - date1;
             var m = r.Months;
             var d = r.Days;
+
+            DateLength = m.ToString();
 
             // Для ячейки первого месяца
             if (StartDate != startDay)
