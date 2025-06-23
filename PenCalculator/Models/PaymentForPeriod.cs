@@ -8,6 +8,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using PenCalculator.Infrastructure.Services;
 
 namespace PenCalculator.Models
 {
@@ -22,7 +23,9 @@ namespace PenCalculator.Models
             set
             {
                 _startDate = value;
+                CalcPaySizeOnPeriod();
                 OnPropertyChanged(nameof(PaySizeOnPeriod));
+
             }
         }
 
@@ -33,6 +36,7 @@ namespace PenCalculator.Models
             set
             {
                 _endDate = value;
+                CalcPaySizeOnPeriod();
                 OnPropertyChanged(nameof(PaySizeOnPeriod));
             }
         }
@@ -40,17 +44,30 @@ namespace PenCalculator.Models
         #region PaySizeFull : double - Полная назначенная сумма
         ///<summary>Полная назначенная сумма</summary>
         private double _PaySizeFull;
+
         ///<summary>Полная назначенная сумма</summary>
-        public double PaySizeFull { get => _PaySizeFull; set => Set(ref _PaySizeFull, value); }
+        public double PaySizeFull
+        {
+            get => _PaySizeFull;
+            set
+            {
+                Set(ref _PaySizeFull, value);
+                CalcPaySizeOnPeriod();
+                OnPropertyChanged(nameof(PaySizeOnPeriod));
+            }
+        }
+
         #endregion
 
-        
-        #region PaySizeOnPeriod : double - Сумма за период  
-        ///<summary>Сумма за период </summary>
+
+            #region PaySizeOnPeriod : double - Сумма за период  
+            ///<summary>Сумма за период </summary>
         private double _PaySizeOnPeriod;
-        
+
         ///<summary>Сумма за период </summary>
-        public double PaySizeOnPeriod { get => CalcPaySizeOnPeriod();
+        public double PaySizeOnPeriod
+        {
+            get => CalcPaySizeOnPeriod();
             set
             {
                 Set(ref _PaySizeOnPeriod, value);
@@ -60,7 +77,7 @@ namespace PenCalculator.Models
         }
         #endregion
 
-        #region PaySizeOnPeriod : double - Сумма за период  
+        #region PaySizeOnPeriodString : string - Сумма за период  
         ///<summary>Сумма за период </summary>
         private string _PaySizeOnPeriodString;
 
@@ -70,6 +87,15 @@ namespace PenCalculator.Models
             get => _PaySizeOnPeriodString; set => Set(ref _PaySizeOnPeriodString, value);
         }
         #endregion
+
+
+        #region PaySizeFullString : string - Весь период строкой
+        ///<summary>Весь период строкой</summary>
+        public string PaySizeFullString => StringFormat.FormatCulture(_PaySizeFull);
+
+        #endregion
+
+
 
         double CalcPaySizeOnPeriod()
         {
@@ -97,7 +123,7 @@ namespace PenCalculator.Models
             if (StartDate != startDay)
             {
                 var dayStart = date1.Day;// дней с начала месяца
-                paySizeOnPeriod = ((double)PaySizeFull / daysInMonthForStart) * (daysInMonthForStart-dayStart+1);
+                paySizeOnPeriod = ((double)PaySizeFull / daysInMonthForStart) * (daysInMonthForStart - dayStart + 1);
             }
             // Для ячейки последнего месяца
             if (EndDate != endDay)
@@ -108,14 +134,13 @@ namespace PenCalculator.Models
 
             paySizeOnPeriod += PaySizeFull * m;
 
-            // Изменение культуры (локали) для замены разделителя на пробел
-            var cultureWithSpaceSeparator = new CultureInfo("ru-RU");
-            cultureWithSpaceSeparator.NumberFormat.NumberGroupSeparator = " ";
-            PaySizeOnPeriodString = Math.Round(paySizeOnPeriod,2).ToString("N", cultureWithSpaceSeparator);
+            PaySizeOnPeriodString = StringFormat.FormatCulture(paySizeOnPeriod);
 
             OnPropertyChanged(nameof(PaySizeOnPeriodString));
 
             return paySizeOnPeriod;
         }
+
+
     }
 }

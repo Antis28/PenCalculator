@@ -1,6 +1,7 @@
 ﻿using CV19Core.Infrastructure.Commands;
 using CV19Core.ViewModels.Base;
 using NodaTime;
+using PenCalculator.Infrastructure.Services;
 using PenCalculator.Models;
 using System;
 using System.Collections.ObjectModel;
@@ -15,8 +16,8 @@ namespace PenCalculator.ViewModels
     [MarkupExtensionReturnType(typeof(MainViewModel))]
     internal class MainViewModel : ViewModel
     {
-        private double _PayTotal;
-        public double PayTotal { get => _PayTotal; set => Set(ref _PayTotal, value); }
+        private string _PayTotal;
+        public string PayTotal { get => _PayTotal; set => Set(ref _PayTotal, value); }
 
         public ObservableCollection<PaymentForPeriod> Groups { get; }
         #region SelectedGroup : Group - Выбранная группа
@@ -44,7 +45,7 @@ namespace PenCalculator.ViewModels
                 payTotal += group.PaySizeOnPeriod;
             }
 
-            PayTotal = Math.Round(payTotal, 2);
+            PayTotal = StringFormat.FormatCulture( Math.Round(payTotal, 2));
         }
 
         #endregion
