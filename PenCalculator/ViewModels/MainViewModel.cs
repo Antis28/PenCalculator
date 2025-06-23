@@ -16,8 +16,27 @@ namespace PenCalculator.ViewModels
     [MarkupExtensionReturnType(typeof(MainViewModel))]
     internal class MainViewModel : ViewModel
     {
+        private double _PayTotalVal;
         private string _PayTotal;
         public string PayTotal { get => _PayTotal; set => Set(ref _PayTotal, value); }
+
+
+        #region PaidTotal : string - Выплачено всего
+        ///<summary>Выплачено всего</summary>
+        private string _PaidTotal;
+        ///<summary>Выплачено всего</summary>
+        public string PaidTotal { get => _PaidTotal; set => Set(ref _PaidTotal, value); }
+        #endregion
+
+
+        #region DifferencePaid : string - Разница в выплате
+        ///<summary>Разница в выплате</summary>
+        private string _DifferencePaid;
+        ///<summary>Разница в выплате</summary>
+        public string DifferencePaid { get => _DifferencePaid; set => Set(ref _DifferencePaid, value); }
+        #endregion
+
+
 
         /// <summary>
         /// Положено к выплате
@@ -35,14 +54,27 @@ namespace PenCalculator.ViewModels
         /// <summary>
         /// Выплачено
         /// </summary>
-        public ObservableCollection<double> PaidOut { get; }
+        public ObservableCollection<PaidOutM> PaidOut { get; }
+
+        #region SelectedPaidOut : Выплачено текущая строка
+        ///<summary>Выбранная группа</summary>
+        private PaidOutM _SelectedPaidOut;
+        ///<summary>Выбранная группа</summary>
+        public PaidOutM SelectedPaidOut { get => _SelectedPaidOut; set => Set(ref _SelectedPaidOut, value); }
+
+        #endregion
 
 
-        #region CalculateCommand
-        public ICommand CalculateCommand { get; }
-        private bool CanCalculateCommandExecute(object p) => true;
+        #region CalculatePaymentCommand
+        public ICommand CalculatePaymentCommand { get; }
+        private bool CanCalculatePaymentCommandExecute(object p) => true;
 
-        private void OnCalculateCommandExecuted(object p)
+        private void OnCalculatePaymentCommandExecuted(object p)
+        {
+            CalcPayment();
+        }
+
+        private void CalcPayment()
         {
             // сумма за период
             double payTotal = 0;
@@ -52,10 +84,36 @@ namespace PenCalculator.ViewModels
                 payTotal += group.PaySizeOnPeriod;
             }
 
-            PayTotal = StringFormat.FormatCulture( Math.Round(payTotal, 2));
+            _PayTotalVal = payTotal;
+            PayTotal = StringFormat.FormatCulture(Math.Round(payTotal, 2));
         }
 
         #endregion
+
+        #region CalculatePaidCommand
+        public ICommand CalculatePaidCommand { get; }
+        private bool CanCalculatePaidCommandExecute(object p) => true;
+
+        private void OnCalculatePaidCommandExecuted(object p)
+        {
+
+            CalcPayment();
+
+            // сумма за период
+            double paidTotal = 0;
+
+            foreach (var group in PaidOut)
+            {
+                paidTotal += group.Payment;
+            }
+
+            PaidTotal = StringFormat.FormatCulture(Math.Round(paidTotal, 2));
+
+            DifferencePaid = StringFormat.FormatCulture(Math.Round(_PayTotalVal - paidTotal, 2));
+        }
+
+        #endregion
+
 
         #region AddPeriodCommand
         public ICommand AddPeriodCommand { get; }
@@ -67,7 +125,7 @@ namespace PenCalculator.ViewModels
             var last = PaymentPurposes.LastOrDefault();
             PaymentPurposes.Add(new PaymentForPeriod()
             {
-                StartDate = last.StartDate.AddMonths(1),
+                StartDate = last.EndDate.AddMonths(1),
                 EndDate = last.EndDate.AddMonths(4),
                 PaySizeFull = paySize,
             });
@@ -102,18 +160,31 @@ namespace PenCalculator.ViewModels
         private void OnAddPaidOutCommandExecuted(object p)
         {
             double paySize = 0;
-            var last = PaymentPurposes.LastOrDefault();
-            PaymentPurposes.Add(new PaymentForPeriod()
-            {
-                StartDate = last.StartDate.AddMonths(1),
-                EndDate = last.EndDate.AddMonths(4),
-                PaySizeFull = paySize,
-            });
-            OnPropertyChanged(nameof(PaymentPurposes));
+            var last = PaidOut.LastOrDefault();
+            PaidOut.Add(new PaidOutM(paySize));
+            OnPropertyChanged(nameof(PaidOut));
         }
 
         #endregion
-        
+        #region RemovePaidCommand
+        public ICommand RemovePaidCommand { get; }
+        private bool CanRemovePaidCommandExecute(object p) => true;
+
+        private void OnRemovePaidCommandExecuted(object p)
+        {
+            var id = PaidOut.IndexOf(SelectedPaidOut);
+
+            if (id == 0)
+            {
+                return;
+            }
+            PaidOut.Remove(SelectedPaidOut);
+            SelectedPaidOut = id - 1 > -1 ? PaidOut[id - 1] : PaidOut[0];
+
+        }
+
+        #endregion
+
 
         public MainViewModel()
         {
@@ -178,18 +249,24 @@ namespace PenCalculator.ViewModels
                 //}
 
             };
-            PaidOut = new ObservableCollection<double>
+            PaidOut = new ObservableCollection<PaidOutM>
             {
-                500,
-                200,
+                new PaidOutM(0),
+                new PaidOutM(0),
             };
 
-            CalculateCommand =
-                new LambdaCommand(OnCalculateCommandExecuted, CanCalculateCommandExecute);
+            CalculatePaymentCommand =
+                new LambdaCommand(OnCalculatePaymentCommandExecuted, CanCalculatePaymentCommandExecute);
             AddPeriodCommand =
                 new LambdaCommand(OnAddPeriodCommandExecuted, CanAddPeriodCommandExecute);
             RemovePeriodCommand =
                 new LambdaCommand(OnRemovePeriodCommandExecuted, CanRemovePeriodCommandExecute);
+            AddPaidOutCommand =
+                new LambdaCommand(OnAddPaidOutCommandExecuted, CanAddPaidOutCommandExecute);
+            RemovePaidCommand =
+                new LambdaCommand(OnRemovePaidCommandExecuted, CanRemovePaidCommandExecute);
+            CalculatePaidCommand =
+                new LambdaCommand(OnCalculatePaidCommandExecuted, CanCalculatePaidCommandExecute);
         }
     }
 }
