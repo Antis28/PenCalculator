@@ -125,7 +125,7 @@ namespace PenCalculator.ViewModels
             var last = PaymentPurposes.LastOrDefault();
             PaymentPurposes.Add(new PaymentForPeriod()
             {
-                StartDate = last.EndDate.AddMonths(1),
+                StartDate = last.StartDate.AddMonths(1),
                 EndDate = last.EndDate.AddMonths(4),
                 PaySizeFull = paySize,
             });

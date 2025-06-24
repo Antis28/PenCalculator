@@ -143,8 +143,11 @@ namespace PenCalculator.Models
             LocalDate date1 = new LocalDate(StartDate.Year, StartDate.Month, StartDate.Day);
             LocalDate date2 = new LocalDate(EndDate.Year, EndDate.Month, EndDate.Day);
             var r = (date2 + Period.FromDays(1)) - date1;
-            var m = r.Months;
+            
             var d = r.Days;
+            var y = r.Years;
+
+            var m = r.Months+y*12;
 
             DateLength = m.ToString();
 
