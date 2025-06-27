@@ -17,23 +17,23 @@ namespace PenCalculator.ViewModels
     internal class MainViewModel : ViewModel
     {
         private double _PayTotalVal;
-        private string _PayTotal;
-        public string PayTotal { get => _PayTotal; set => Set(ref _PayTotal, value); }
+        private double _PayTotal;
+        public double PayTotal { get => _PayTotal; set => Set(ref _PayTotal, value); }
 
 
         #region PaidTotal : string - Выплачено всего
         ///<summary>Выплачено всего</summary>
-        private string _PaidTotal;
+        private double _PaidTotal;
         ///<summary>Выплачено всего</summary>
-        public string PaidTotal { get => _PaidTotal; set => Set(ref _PaidTotal, value); }
+        public double PaidTotal { get => _PaidTotal; set => Set(ref _PaidTotal, value); }
         #endregion
 
 
         #region DifferencePaid : string - Разница в выплате
         ///<summary>Разница в выплате</summary>
-        private string _DifferencePaid;
+        private double _DifferencePaid;
         ///<summary>Разница в выплате</summary>
-        public string DifferencePaid { get => _DifferencePaid; set => Set(ref _DifferencePaid, value); }
+        public double DifferencePaid { get => _DifferencePaid; set => Set(ref _DifferencePaid, value); }
         #endregion
 
 
@@ -85,7 +85,7 @@ namespace PenCalculator.ViewModels
             }
 
             _PayTotalVal = payTotal;
-            PayTotal = StringFormat.FormatCulture(Math.Round(payTotal, 2));
+            PayTotal = Math.Round(payTotal, 2);
         }
 
         #endregion
@@ -107,9 +107,9 @@ namespace PenCalculator.ViewModels
                 paidTotal += group.Payment;
             }
 
-            PaidTotal = StringFormat.FormatCulture(Math.Round(paidTotal, 2));
+            PaidTotal = Math.Round(paidTotal, 2);
 
-            DifferencePaid = StringFormat.FormatCulture(Math.Round(_PayTotalVal - paidTotal, 2));
+            DifferencePaid = Math.Round(_PayTotalVal - paidTotal, 2);
         }
 
         #endregion
@@ -127,7 +127,7 @@ namespace PenCalculator.ViewModels
             {
                 StartDate = last.StartDate.AddMonths(1),
                 EndDate = last.EndDate.AddMonths(4),
-                PaySizeFull = paySize,
+                PaySizeFull = last.PaySizeFull,
             });
             OnPropertyChanged(nameof(PaymentPurposes));
         }

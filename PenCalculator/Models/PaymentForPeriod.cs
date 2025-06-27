@@ -90,23 +90,11 @@ namespace PenCalculator.Models
             set
             {
                 Set(ref _PaySizeOnPeriod, value);
-                PaySizeOnPeriodString = $"{_PaySizeOnPeriod:#,0}";
-                OnPropertyChanged(nameof(PaySizeOnPeriodString));
             }
         }
         #endregion
 
-        #region PaySizeOnPeriodString : string - Сумма за период  
-        ///<summary>Сумма за период </summary>
-        private string _PaySizeOnPeriodString;
-
-        ///<summary>Сумма за период </summary>
-        public string PaySizeOnPeriodString
-        {
-            get => _PaySizeOnPeriodString; set => Set(ref _PaySizeOnPeriodString, value);
-        }
-        #endregion
-
+        
 
         #region PaySizeFullString : string - Весь период строкой
         ///<summary>Весь период строкой</summary>
@@ -166,9 +154,7 @@ namespace PenCalculator.Models
 
             paySizeOnPeriod += PaySizeFull * m;
 
-            PaySizeOnPeriodString = StringFormat.FormatCulture(paySizeOnPeriod);
-
-            OnPropertyChanged(nameof(PaySizeOnPeriodString));
+            
 
             return paySizeOnPeriod;
         }

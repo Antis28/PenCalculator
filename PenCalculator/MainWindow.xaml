@@ -7,29 +7,36 @@
         mc:Ignorable="d"
         FontSize="14"
         xmlns:vm="clr-namespace:PenCalculator.ViewModels"
+        xmlns:c="clr-namespace:PenCalculator.Infrastructure.Converters"
         xmlns:models="clr-namespace:PenCalculator.Models"
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         Title="MainWindow" Height="550" Width="800"
-        
+        Language="ru-ru"
         >
     <!--<Button Style="{StaticResource PrimaryButton}" Content="Добавить"  Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.AddPeriodCommand}"/>-->
     <Window.DataContext>
         <vm:MainViewModel/>
     </Window.DataContext>
+    <Window.Resources>
 
+        <c:MoneyToStringConverter x:Key="moneyToStringConverter" />
+    </Window.Resources>
     <Grid >
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
-        <StackPanel Grid.Row="0" Orientation="Horizontal">
-            <Button Visibility="Collapsed" Command="{Binding CalculatePaymentCommand}" Width="100"   Style="{StaticResource DangerButton}" HorizontalAlignment="Center" Content="Calculate" Margin="5,5"/>
-            <Button Style="{StaticResource PrimaryButton}" Width="100"   HorizontalAlignment="Center" Content="Добавить"  Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.AddPeriodCommand}"  Margin="5,5"/>
-            <Button Style="{StaticResource DangerButton}" Width="100"    HorizontalAlignment="Center" Content="Удалить"    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.RemovePeriodCommand}" Margin="5,5"/>
+        <StackPanel Grid.Row="0">
+            <TextBlock Text="Положено:" Margin="5,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <StackPanel  Orientation="Horizontal">
+                <Button Style="{StaticResource PrimaryButton}" Width="100"   HorizontalAlignment="Center" Content="Добавить"  Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.AddPeriodCommand}"  Margin="5,5"/>
+                <Button Style="{StaticResource DangerButton}" Width="100"    HorizontalAlignment="Center" Content="Удалить"    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.RemovePeriodCommand}" Margin="5,5"/>
+            </StackPanel>
         </StackPanel>
         <ListBox Grid.Row="1" ItemsSource="{Binding PaymentPurposes, UpdateSourceTrigger=PropertyChanged}" 
                  SelectedItem="{Binding SelectedPaymentPurposes}"
@@ -52,41 +59,44 @@
                         <TextBlock Text="Период:" Margin="5,0" VerticalAlignment="Center"/>
                         <TextBlock Text="{Binding DateLength}" Margin="5,0" VerticalAlignment="Center"/>
                         <TextBlock Text="Размер:" Margin="5,0" VerticalAlignment="Center"/>
-                        <TextBox Text="{Binding PaySizeFull, StringFormat={}{0:F2}, Mode=TwoWay}" Margin="5,0" VerticalAlignment="Center" MinWidth="40"/>
-
-                        <TextBox Text="{Binding PaySizeOnPeriodString, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay }"   Margin="5,0" VerticalAlignment="Center" MinWidth="40"/>
+                        <TextBox  Text="{Binding PaySizeFull,Converter={StaticResource moneyToStringConverter} , Mode=TwoWay}" Margin="5,0" VerticalAlignment="Center" MinWidth="100"/>
+                        <!--StringFormat={}{0:F2}-->
+                        <TextBox Text="{Binding PaySizeOnPeriod,Converter={StaticResource moneyToStringConverter}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay }"   Margin="5,0" VerticalAlignment="Center" MinWidth="100"/>
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
         <StackPanel Grid.Row="2" Orientation="Horizontal" Height="30">
             <TextBlock Text="Сумма:"/>
-            <TextBox Text="{Binding PayTotal, StringFormat={}{0:F2}}" MinWidth="40"/>
+            <TextBox Text="{Binding PayTotal, Converter={StaticResource moneyToStringConverter}}" MinWidth="100"/>
         </StackPanel>
-        <StackPanel Grid.Row="3" Orientation="Horizontal">
-            <Button Command="{Binding CalculatePaidCommand}" Width="100"   Style="{StaticResource DangerButton}" HorizontalAlignment="Center" Content="Calculate" Margin="5,5"/>
+        <StackPanel Grid.Row="3">
+            <TextBlock Text="Выплачено:" Margin="5,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </StackPanel>
+        <StackPanel Grid.Row="4" Orientation="Horizontal">
             <Button Style="{StaticResource PrimaryButton}" Width="100"  HorizontalAlignment="Center" Content="Добавить"  Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.AddPaidOutCommand}" Margin="5,5"/>
             <Button Style="{StaticResource DangerButton}" Width="100"   HorizontalAlignment="Center" Content="Удалить"    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.RemovePaidCommand}" Margin="5,5"/>
         </StackPanel>
-        <ListBox Grid.Row="4" ItemsSource="{Binding PaidOut, UpdateSourceTrigger=PropertyChanged}" 
+        <ListBox Grid.Row="5" ItemsSource="{Binding PaidOut, UpdateSourceTrigger=PropertyChanged}" 
                  SelectedItem="{Binding SelectedPaidOut}" SelectionMode="Single">
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="{x:Type models:PaidOutM}">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Top " Margin="5">
                         <TextBlock Text="Размер:" Margin="5,0" VerticalAlignment="Center"/>
-                        <TextBox Text="{Binding Payment}" Margin="5,0" VerticalAlignment="Center" MinWidth="40"/>
+                        <TextBox  Text="{Binding Payment, Converter={StaticResource moneyToStringConverter}}" Margin="5,0" VerticalAlignment="Center" MinWidth="100"/>
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <StackPanel Grid.Row="5" Orientation="Vertical" >
+        <StackPanel Grid.Row="6" Orientation="Vertical" >
             <StackPanel Orientation="Horizontal" Height="30">
                 <TextBlock Text="Сумма:"/>
-                <TextBox Text="{Binding PaidTotal, StringFormat={}{0:F2}}" MinWidth="40"></TextBox>
+                <TextBox Text="{Binding PaidTotal, Converter={StaticResource moneyToStringConverter}}" MinWidth="100"></TextBox>
             </StackPanel>
+            <Button Command="{Binding CalculatePaidCommand}" Width="100"   Style="{StaticResource DangerButton}" HorizontalAlignment="Center" Content="Calculate" Margin="5,5"/>
             <StackPanel Orientation="Horizontal" Height="30">
                 <TextBlock Text="Разница:"/>
-                <TextBox Text="{Binding DifferencePaid, StringFormat={}{0:F2}}" MinWidth="40"></TextBox>
+                <TextBox Text="{Binding DifferencePaid,Converter={StaticResource moneyToStringConverter}}"  MinWidth="100"></TextBox>
             </StackPanel>
         </StackPanel>
     </Grid>
