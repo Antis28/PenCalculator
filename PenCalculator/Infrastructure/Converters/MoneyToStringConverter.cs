@@ -13,8 +13,8 @@ namespace PenCalculator.Infrastructure.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null)
-                return 0.ToString("N");
+            if (value == null || (double)value == 0)
+                return "";
             return ((double)value).ToString("N");
 
             return string.Format("{0:# ###.00}", ((double)value));
