@@ -1,13 +1,9 @@
 ﻿using CV19Core.Infrastructure.Commands;
 using CV19Core.ViewModels.Base;
-using NodaTime;
-using PenCalculator.Infrastructure.Services;
 using PenCalculator.Models;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text.RegularExpressions;
-using System.Windows;
 using System.Windows.Input;
 using System.Windows.Markup;
 
@@ -123,11 +119,23 @@ namespace PenCalculator.ViewModels
         {
             double paySize = 0;
             var last = PaymentPurposes.LastOrDefault();
+
+            var oldStartDate = last.StartDate; 
+            var oldEndDate = last.EndDate;
+
+            var newStartDate= last.EndDate.AddDays(1);
+
+            // кол. дней в последнем месяце
+            var newEndDate = newStartDate;
+            int daysInMonthForEnd = DateTime.DaysInMonth(newEndDate.Year, newEndDate.Month);
+            newEndDate = new DateTime(newEndDate.Year, newEndDate.Month, daysInMonthForEnd);
+            
+
             PaymentPurposes.Add(new PaymentForPeriod()
             {
-                StartDate = last.StartDate.AddMonths(1),
-                EndDate = last.EndDate.AddMonths(4),
-                PaySizeFull = last.PaySizeFull,
+                StartDate = newStartDate,
+                EndDate = newEndDate,
+                PaySizeFull = paySize,
             });
             OnPropertyChanged(nameof(PaymentPurposes));
         }
