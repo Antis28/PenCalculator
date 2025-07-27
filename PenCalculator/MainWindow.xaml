@@ -20,6 +20,7 @@
     <Window.Resources>
 
         <c:MoneyToStringConverter x:Key="moneyToStringConverter" />
+        <c:BoolToVisibleConverter x:Key="boolToVisibleConverter" />
     </Window.Resources>
     <Grid >
         <Grid.RowDefinitions>
@@ -36,6 +37,7 @@
             <StackPanel  Orientation="Horizontal">
                 <Button Style="{StaticResource PrimaryButton}" Width="100"   HorizontalAlignment="Center" Content="Добавить"  Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.AddPeriodCommand}"  Margin="5,5"/>
                 <Button Style="{StaticResource DangerButton}" Width="100"    HorizontalAlignment="Center" Content="Удалить"    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.RemovePeriodCommand}" Margin="5,5"/>
+                <Button Style="{StaticResource BaseStyle}" Width="100"    HorizontalAlignment="Right" Content="Сохранить"    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.SaveToFileCommand}" Margin="5,5"/>
             </StackPanel>
         </StackPanel>
         <ListBox Grid.Row="1" ItemsSource="{Binding PaymentPurposes, UpdateSourceTrigger=PropertyChanged}" 
@@ -80,10 +82,40 @@
         <ListBox Grid.Row="5" ItemsSource="{Binding PaidOut, UpdateSourceTrigger=PropertyChanged}" 
                  SelectedItem="{Binding SelectedPaidOut}" SelectionMode="Single">
             <ListBox.ItemTemplate>
-                <DataTemplate DataType="{x:Type models:PaidOutM}">
+                <DataTemplate DataType="{x:Type models:PaymentForPeriod}">
                     <StackPanel Orientation="Horizontal" VerticalAlignment="Top " Margin="5">
-                        <TextBlock Text="Размер:" Margin="5,0" VerticalAlignment="Center"/>
-                        <TextBox  Text="{Binding Payment, Converter={StaticResource moneyToStringConverter}}" Margin="5,0" VerticalAlignment="Center" MinWidth="100"/>
+                        <CheckBox Content="{Binding IsAllVisible, Converter={StaticResource boolToVisibleConverter}, Mode=OneWay }" IsChecked="{Binding IsAllVisible, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        <TextBlock Visibility="{Binding IsAllVisible, Converter={StaticResource boolToVisibleConverter} }" Text="C:" Margin="5,0" VerticalAlignment="Center"/>
+                        <DatePicker 
+                            Visibility="{Binding IsAllVisible, Converter={StaticResource boolToVisibleConverter} }"  
+                            SelectedDate="{Binding
+                            Path=StartDate,
+                            Mode=TwoWay,
+                            UpdateSourceTrigger=PropertyChanged,
+                            TargetNullValue={x:Static System:DateTime.Now}}"/>
+                        <TextBlock Visibility="{Binding IsAllVisible, Converter={StaticResource boolToVisibleConverter} }"
+                                   Text="ПО:" 
+                                   Margin="5,0" 
+                                   VerticalAlignment="Center"/>
+                        <DatePicker 
+                            Visibility="{Binding IsAllVisible, Converter={StaticResource boolToVisibleConverter} }"
+                            SelectedDate="{Binding
+                            Path=EndDate,
+                            Mode=TwoWay,
+                            UpdateSourceTrigger=PropertyChanged,
+                            TargetNullValue={x:Static System:DateTime.Now}}"/>
+                        <TextBlock Visibility="{Binding IsAllVisible, Converter={StaticResource boolToVisibleConverter} }"
+                                   Text="Период:" Margin="5,0" VerticalAlignment="Center"/>
+                        <TextBlock 
+                            Visibility="{Binding IsAllVisible, Converter={StaticResource boolToVisibleConverter} }"
+                            Text="{Binding DateLength}" Margin="5,0" VerticalAlignment="Center"/>
+                        <TextBlock 
+                            Visibility="{Binding IsAllVisible, Converter={StaticResource boolToVisibleConverter} }"
+                            Text="Размер:" Margin="5,0" VerticalAlignment="Center"/>
+                        <TextBox Visibility="{Binding IsAllVisible, Converter={StaticResource boolToVisibleConverter} }"  Text="{Binding PaySizeFull,Converter={StaticResource moneyToStringConverter} , Mode=TwoWay}" Margin="5,0" VerticalAlignment="Center" MinWidth="100"/>
+                        <!--StringFormat={}{0:F2}-->
+                        <TextBox Text="{Binding PaySizeOnPeriod,Converter={StaticResource moneyToStringConverter}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay }"   Margin="5,0" VerticalAlignment="Center" MinWidth="100"/>
+                        
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>

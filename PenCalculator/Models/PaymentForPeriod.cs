@@ -1,13 +1,5 @@
-﻿using CV19Core.ViewModels.Base;
-using NodaTime;
+﻿using NodaTime;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Globalization;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 using PenCalculator.Infrastructure.Services;
 
 namespace PenCalculator.Models
@@ -16,7 +8,7 @@ namespace PenCalculator.Models
     {
         public int ID { get; set; }
 
-        private DateTime _startDate;
+        private DateTime _startDate = new DateTime(2023, 03, 01);
         public DateTime StartDate
         {
             get => _startDate;
@@ -40,7 +32,7 @@ namespace PenCalculator.Models
             }
         }
 
-        private DateTime _endDate;
+        private DateTime _endDate = new DateTime(2023, 11, 30);
         public DateTime EndDate
         {
             get => _endDate;
@@ -94,7 +86,6 @@ namespace PenCalculator.Models
         }
         #endregion
 
-        
 
         #region PaySizeFullString : string - Весь период строкой
         ///<summary>Весь период строкой</summary>
@@ -108,6 +99,13 @@ namespace PenCalculator.Models
         private string _DateLength;
         ///<summary>Длинна периода в месяцах</summary>
         public string DateLength { get => _DateLength; set => Set(ref _DateLength, value); }
+        #endregion
+
+        #region IsAllVisible : bool - видимость месяцев
+        ///<summary>Длинна периода в месяцах</summary>
+        private bool _IsAllVisible = true;
+        ///<summary>Длинна периода в месяцах</summary>
+        public bool IsAllVisible { get => _IsAllVisible; set => Set(ref _IsAllVisible, value); }
         #endregion
 
 

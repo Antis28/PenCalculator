@@ -3,9 +3,11 @@ using CV19Core.ViewModels.Base;
 using PenCalculator.Models;
 using System;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Windows.Input;
 using System.Windows.Markup;
+using Newtonsoft.Json;
 
 namespace PenCalculator.ViewModels
 {
@@ -50,13 +52,13 @@ namespace PenCalculator.ViewModels
         /// <summary>
         /// Выплачено
         /// </summary>
-        public ObservableCollection<PaidOutM> PaidOut { get; }
+        public ObservableCollection<PaymentForPeriod> PaidOut { get; }
 
         #region SelectedPaidOut : Выплачено текущая строка
         ///<summary>Выбранная группа</summary>
-        private PaidOutM _SelectedPaidOut;
+        private PaymentForPeriod _SelectedPaidOut;
         ///<summary>Выбранная группа</summary>
-        public PaidOutM SelectedPaidOut { get => _SelectedPaidOut; set => Set(ref _SelectedPaidOut, value); }
+        public PaymentForPeriod SelectedPaidOut { get => _SelectedPaidOut; set => Set(ref _SelectedPaidOut, value); }
 
         #endregion
 
@@ -100,7 +102,7 @@ namespace PenCalculator.ViewModels
 
             foreach (var group in PaidOut)
             {
-                paidTotal += group.Payment;
+                paidTotal += group.PaySizeOnPeriod;
             }
 
             PaidTotal = Math.Round(paidTotal, 2);
@@ -120,16 +122,16 @@ namespace PenCalculator.ViewModels
             double paySize = 0;
             var last = PaymentPurposes.LastOrDefault();
 
-            var oldStartDate = last.StartDate; 
+            var oldStartDate = last.StartDate;
             var oldEndDate = last.EndDate;
 
-            var newStartDate= last.EndDate.AddDays(1);
+            var newStartDate = last.EndDate.AddDays(1);
 
             // кол. дней в последнем месяце
             var newEndDate = newStartDate;
             int daysInMonthForEnd = DateTime.DaysInMonth(newEndDate.Year, newEndDate.Month);
             newEndDate = new DateTime(newEndDate.Year, newEndDate.Month, daysInMonthForEnd);
-            
+
 
             PaymentPurposes.Add(new PaymentForPeriod()
             {
@@ -169,7 +171,7 @@ namespace PenCalculator.ViewModels
         {
             double paySize = 0;
             var last = PaidOut.LastOrDefault();
-            PaidOut.Add(new PaidOutM(paySize));
+            PaidOut.Add(new PaymentForPeriod());
             OnPropertyChanged(nameof(PaidOut));
         }
 
@@ -193,6 +195,31 @@ namespace PenCalculator.ViewModels
 
         #endregion
 
+        #region SaveToFileCommand
+        public ICommand SaveToFileCommand { get; }
+        private bool CanSaveToFileCommandExecute(object p) => true;
+
+        private void OnSaveToFileCommandExecuted(object p)
+        {
+            var df = new DataFile()
+            {
+                FileName = $"{DateTime.Now.Year}.{DateTime.Now.Month}.{DateTime.Now.Day}_{DateTime.Now.Hour}.{DateTime.Now.Minute}.{DateTime.Now.Second}.JSON",
+                PaidOut = PaidOut,
+                DifferencePaid = DifferencePaid,
+                PaidTotal = PaidTotal,
+                PaymentPurposes = PaymentPurposes
+            };
+
+            var jsonText = JsonConvert.SerializeObject(df,Formatting.Indented);
+            var wr = File.CreateText(df.FileName);
+
+            wr.AutoFlush = true;
+            wr.Write(jsonText);
+            wr.Close();
+        }
+
+        #endregion
+
 
         public MainViewModel()
         {
@@ -209,21 +236,21 @@ namespace PenCalculator.ViewModels
                     PaySizeFull = 10_000
                 },
 
-                new PaymentForPeriod
-                {
-                    ID = 2,
-                    StartDate = DateTime.Parse("01.04.2023"),
-                    EndDate = DateTime.Parse("31.05.2023"),
-                    PaySizeFull = 10_000
-                },
+                //new PaymentForPeriod
+                //{
+                //    ID = 2,
+                //    StartDate = DateTime.Parse("01.04.2023"),
+                //    EndDate = DateTime.Parse("31.05.2023"),
+                //    PaySizeFull = 10_000
+                //},
 
-                new PaymentForPeriod
-                {
-                    ID = 3,
-                    StartDate = DateTime.Parse("01.06.2023"),
-                    EndDate = DateTime.Parse("31.12.2023"),
-                    PaySizeFull = 10_000
-                },
+                //new PaymentForPeriod
+                //{
+                //    ID = 3,
+                //    StartDate = DateTime.Parse("01.06.2023"),
+                //    EndDate = DateTime.Parse("31.12.2023"),
+                //    PaySizeFull = 10_000
+                //},
 
                 //new PaymentForPeriod
                 //{
@@ -257,10 +284,10 @@ namespace PenCalculator.ViewModels
                 //}
 
             };
-            PaidOut = new ObservableCollection<PaidOutM>
+            PaidOut = new ObservableCollection<PaymentForPeriod>
             {
-                new PaidOutM(0),
-                new PaidOutM(0),
+                new PaymentForPeriod(),
+                new PaymentForPeriod(),
             };
 
             CalculatePaymentCommand =
@@ -275,6 +302,8 @@ namespace PenCalculator.ViewModels
                 new LambdaCommand(OnRemovePaidCommandExecuted, CanRemovePaidCommandExecute);
             CalculatePaidCommand =
                 new LambdaCommand(OnCalculatePaidCommandExecuted, CanCalculatePaidCommandExecute);
+            SaveToFileCommand =
+                new LambdaCommand(OnSaveToFileCommandExecuted, CanSaveToFileCommandExecute);
         }
     }
 }
