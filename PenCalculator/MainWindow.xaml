@@ -34,6 +34,12 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Имя файла:" Margin="5,0" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+                <TextBox Text="{Binding FileName, Mode=TwoWay}" MinWidth="200" Margin="5,0" VerticalAlignment="Center" HorizontalAlignment="Left"/>
+
+            </StackPanel>
+            
             <TextBlock Text="Положено:" Margin="5,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             <StackPanel  Orientation="Horizontal">
                 <Button Style="{StaticResource PrimaryButton}" Width="100"   HorizontalAlignment="Center" Content="Добавить"  Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.AddPeriodCommand}"  Margin="5,5"/>

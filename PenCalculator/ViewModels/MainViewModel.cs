@@ -16,6 +16,10 @@ namespace PenCalculator.ViewModels
     {
         private double _PayTotalVal;
         private double _PayTotal;
+        private string _FileName;
+
+        public string FileName { get => _FileName; set => Set(ref _FileName, value); }
+
         public double PayTotal { get => _PayTotal; set => Set(ref _PayTotal, value); }
 
 
@@ -203,7 +207,7 @@ namespace PenCalculator.ViewModels
         {
             var df = new DataFile()
             {
-                FileName = $"{DateTime.Now.Year}.{DateTime.Now.Month}.{DateTime.Now.Day}_{DateTime.Now.Hour}.{DateTime.Now.Minute}.{DateTime.Now.Second}.JSON",
+                FileName = this.FileName,
                 PaidOut = PaidOut,
                 DifferencePaid = DifferencePaid,
                 PaidTotal = PaidTotal,
@@ -211,7 +215,7 @@ namespace PenCalculator.ViewModels
             };
 
             var jsonText = JsonConvert.SerializeObject(df, Formatting.Indented);
-            var wr = File.CreateText(df.FileName);
+            var wr = File.CreateText($"{df.FileName}.JSON");
 
             wr.AutoFlush = true;
             wr.Write(jsonText);
@@ -220,7 +224,7 @@ namespace PenCalculator.ViewModels
 
         #endregion
 
-        
+
 
 
         public MainViewModel()
@@ -306,6 +310,9 @@ namespace PenCalculator.ViewModels
                 new LambdaCommand(OnCalculatePaidCommandExecuted, CanCalculatePaidCommandExecute);
             SaveToFileCommand =
                 new LambdaCommand(OnSaveToFileCommandExecuted, CanSaveToFileCommandExecute);
+
+            FileName =
+                $"{DateTime.Now.Year}.{DateTime.Now.Month}.{DateTime.Now.Day}_{DateTime.Now.Hour}.{DateTime.Now.Minute}.{DateTime.Now.Second}";
         }
 
         public void LoadFromFile(string file)
@@ -323,7 +330,7 @@ namespace PenCalculator.ViewModels
             {
                 PaymentPurposes.Add(item);
             }
-
+            FileName = dataFile.FileName;
             DifferencePaid = dataFile.DifferencePaid;
             PaidTotal = dataFile.PaidTotal;
         }
