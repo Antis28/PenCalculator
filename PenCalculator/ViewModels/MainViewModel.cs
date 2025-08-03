@@ -52,7 +52,7 @@ namespace PenCalculator.ViewModels
         /// <summary>
         /// Выплачено
         /// </summary>
-        public ObservableCollection<PaymentForPeriod> PaidOut { get; }
+        public ObservableCollection<PaymentForPeriod> PaidOut { get; private set; }
 
         #region SelectedPaidOut : Выплачено текущая строка
         ///<summary>Выбранная группа</summary>
@@ -210,7 +210,7 @@ namespace PenCalculator.ViewModels
                 PaymentPurposes = PaymentPurposes
             };
 
-            var jsonText = JsonConvert.SerializeObject(df,Formatting.Indented);
+            var jsonText = JsonConvert.SerializeObject(df, Formatting.Indented);
             var wr = File.CreateText(df.FileName);
 
             wr.AutoFlush = true;
@@ -219,6 +219,8 @@ namespace PenCalculator.ViewModels
         }
 
         #endregion
+
+        
 
 
         public MainViewModel()
@@ -304,6 +306,26 @@ namespace PenCalculator.ViewModels
                 new LambdaCommand(OnCalculatePaidCommandExecuted, CanCalculatePaidCommandExecute);
             SaveToFileCommand =
                 new LambdaCommand(OnSaveToFileCommandExecuted, CanSaveToFileCommandExecute);
+        }
+
+        public void LoadFromFile(string file)
+        {
+            var jsonText = File.ReadAllText(file);
+            var dataFile = JsonConvert.DeserializeObject<DataFile>(jsonText);
+
+            PaidOut.Clear();
+            foreach (var item in dataFile.PaidOut)
+            {
+                PaidOut.Add(item);
+            }
+            PaymentPurposes.Clear();
+            foreach (var item in dataFile.PaymentPurposes)
+            {
+                PaymentPurposes.Add(item);
+            }
+
+            DifferencePaid = dataFile.DifferencePaid;
+            PaidTotal = dataFile.PaidTotal;
         }
     }
 }

@@ -12,17 +12,18 @@
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         Title="MainWindow" Height="550" Width="800"
         Language="ru-ru"
+        Drop="SetDropCommand"
+        AllowDrop="True"
         >
     <!--<Button Style="{StaticResource PrimaryButton}" Content="Добавить"  Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.AddPeriodCommand}"/>-->
     <Window.DataContext>
         <vm:MainViewModel/>
     </Window.DataContext>
     <Window.Resources>
-
         <c:MoneyToStringConverter x:Key="moneyToStringConverter" />
         <c:BoolToVisibleConverter x:Key="boolToVisibleConverter" />
     </Window.Resources>
-    <Grid >
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
@@ -38,6 +39,7 @@
                 <Button Style="{StaticResource PrimaryButton}" Width="100"   HorizontalAlignment="Center" Content="Добавить"  Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.AddPeriodCommand}"  Margin="5,5"/>
                 <Button Style="{StaticResource DangerButton}" Width="100"    HorizontalAlignment="Center" Content="Удалить"    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.RemovePeriodCommand}" Margin="5,5"/>
                 <Button Style="{StaticResource BaseStyle}" Width="100"    HorizontalAlignment="Right" Content="Сохранить"    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.SaveToFileCommand}" Margin="5,5"/>
+                
             </StackPanel>
         </StackPanel>
         <ListBox Grid.Row="1" ItemsSource="{Binding PaymentPurposes, UpdateSourceTrigger=PropertyChanged}" 

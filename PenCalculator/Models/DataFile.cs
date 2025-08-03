@@ -11,8 +11,8 @@ namespace PenCalculator.ViewModels
     {
         public string FileName { get; set; }
         
-        public IList<PaymentForPeriod> PaymentPurposes { get; set; }
-        public IList<PaymentForPeriod> PaidOut { get; set; }
+        public IEnumerable<PaymentForPeriod> PaymentPurposes { get; set; }
+        public IEnumerable<PaymentForPeriod> PaidOut { get; set; }
         public double PaidTotal { get; set; }
         public double DifferencePaid { get; set; }
     }

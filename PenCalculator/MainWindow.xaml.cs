@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PenCalculator.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,7 +25,19 @@ namespace PenCalculator
         {
             InitializeComponent();
         }
+        private void SetDropCommand(object sender, DragEventArgs e)
+        {
+            if (!e.Data.GetDataPresent(DataFormats.FileDrop)) { return; }
 
-        
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+            var mwContext = (DataContext) as MainViewModel;
+
+            mwContext.LoadFromFile(files[0]);
+            // var allFilesViewModel = fileListBox.DataContext as MainViewModel;
+
+            // Загрузка Drag&Drop
+            //  allFilesViewModel?.LoadFilesInBase(files);
+        }
+
     }
 }
