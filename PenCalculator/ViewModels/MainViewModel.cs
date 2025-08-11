@@ -339,6 +339,11 @@ namespace PenCalculator.ViewModels
 
             FileName =
                 $"{DateTime.Now.Year}.{DateTime.Now.Month}.{DateTime.Now.Day}_{DateTime.Now.Hour}.{DateTime.Now.Minute}.{DateTime.Now.Second}";
+            if (App.StartUpArg != null)
+            {
+                LoadFromFile(App.StartUpArg);
+                App.StartUpArg = null;
+            }
         }
 
         public void LoadFromFile(string file)

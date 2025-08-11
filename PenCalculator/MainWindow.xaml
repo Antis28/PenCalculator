@@ -23,7 +23,7 @@
         <c:MoneyToStringConverter x:Key="moneyToStringConverter" />
         <c:BoolToVisibleConverter x:Key="boolToVisibleConverter" />
     </Window.Resources>
-    <Grid>
+    <Grid Margin="3">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
