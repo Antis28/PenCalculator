@@ -207,7 +207,7 @@ namespace PenCalculator.ViewModels
         #endregion
         #region RemovePaidCommand
         public ICommand RemovePaidCommand { get; }
-        private bool CanRemovePaidCommandExecute(object p) => true;
+        private bool CanRemovePaidCommandExecute(object p) => PaidOut.Count > 1;
 
         private void OnRemovePaidCommandExecuted(object p)
         {
