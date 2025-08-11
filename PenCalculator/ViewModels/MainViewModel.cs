@@ -126,15 +126,10 @@ namespace PenCalculator.ViewModels
             double paySize = 0;
             var last = PaymentPurposes.LastOrDefault();
 
-            var oldStartDate = last.StartDate;
-            var oldEndDate = last.EndDate;
-
-            var newStartDate = last.EndDate.AddDays(1);
+            var newStartDate = NewStartDate(last);
 
             // кол. дней в последнем месяце
-            var newEndDate = newStartDate;
-            int daysInMonthForEnd = DateTime.DaysInMonth(newEndDate.Year, newEndDate.Month);
-            newEndDate = new DateTime(newEndDate.Year, newEndDate.Month, daysInMonthForEnd);
+            var newEndDate = NewEndDate(newStartDate);
 
 
             PaymentPurposes.Add(new PaymentForPeriod()
@@ -146,23 +141,41 @@ namespace PenCalculator.ViewModels
             OnPropertyChanged(nameof(PaymentPurposes));
         }
 
+        private static DateTime NewEndDate(DateTime newStartDate)
+        {
+            var newEndDate = newStartDate;
+            int daysInMonthForEnd = DateTime.DaysInMonth(newEndDate.Year, newEndDate.Month);
+            newEndDate = new DateTime(newEndDate.Year, newEndDate.Month, daysInMonthForEnd);
+            return newEndDate;
+        }
+
+        private static DateTime NewStartDate(PaymentForPeriod last)
+        {
+            var oldStartDate = last.StartDate;
+            var oldEndDate = last.EndDate;
+
+            var newStartDate = last.EndDate.AddDays(1);
+            return newStartDate;
+        }
+
         #endregion
 
         #region RemovePeriodCommand
         public ICommand RemovePeriodCommand { get; }
-        private bool CanRemovePeriodCommandExecute(object p) => true;
+        private bool CanRemovePeriodCommandExecute(object p) => PaymentPurposes.Count > 1;
 
         private void OnRemovePeriodCommandExecuted(object p)
         {
-            var id = PaymentPurposes.IndexOf(SelectedPaymentPurposes);
-
-            if (id == 0)
+            var len = PaymentPurposes.Count;
+            if (len == 1)
             {
                 return;
             }
+
+            var id = PaymentPurposes.IndexOf(SelectedPaymentPurposes);
             PaymentPurposes.Remove(SelectedPaymentPurposes);
             SelectedPaymentPurposes = id - 1 > -1 ? PaymentPurposes[id - 1] : PaymentPurposes[0];
-
+            OnPropertyChanged(nameof(PaymentPurposes));
         }
 
         #endregion
@@ -175,7 +188,19 @@ namespace PenCalculator.ViewModels
         {
             double paySize = 0;
             var last = PaidOut.LastOrDefault();
-            PaidOut.Add(new PaymentForPeriod());
+
+            var newStartDate = NewStartDate(last);
+
+            // кол. дней в последнем месяце
+            var newEndDate = NewEndDate(newStartDate);
+
+            PaidOut.Add(new PaymentForPeriod()
+            {
+                StartDate = newStartDate,
+                EndDate = newEndDate,
+                PaySizeFull = paySize,
+            });
+
             OnPropertyChanged(nameof(PaidOut));
         }
 
@@ -186,15 +211,16 @@ namespace PenCalculator.ViewModels
 
         private void OnRemovePaidCommandExecuted(object p)
         {
-            var id = PaidOut.IndexOf(SelectedPaidOut);
-
-            if (id == 0)
+            var len = PaidOut.Count;
+            if (len == 0)
             {
                 return;
             }
+
+            var id = PaidOut.IndexOf(SelectedPaidOut);
             PaidOut.Remove(SelectedPaidOut);
             SelectedPaidOut = id - 1 > -1 ? PaidOut[id - 1] : PaidOut[0];
-
+            OnPropertyChanged(nameof(PaidOut));
         }
 
         #endregion

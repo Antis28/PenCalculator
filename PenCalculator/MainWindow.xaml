@@ -133,7 +133,7 @@
                 <TextBlock Text="Сумма:"/>
                 <TextBox Text="{Binding PaidTotal, Converter={StaticResource moneyToStringConverter}}" MinWidth="100"></TextBox>
             </StackPanel>
-            <Button Command="{Binding CalculatePaidCommand}" Width="100"   Style="{StaticResource DangerButton}" HorizontalAlignment="Center" Content="Calculate" Margin="5,5"/>
+            <Button Command="{Binding CalculatePaidCommand}" Width="100"   Style="{StaticResource DangerButton}" HorizontalAlignment="Center" Content="Рассчитать" Margin="5,5" Background="#FF07179E"/>
             <StackPanel Orientation="Horizontal" Height="30">
                 <TextBlock Text="Разница:"/>
                 <TextBox Text="{Binding DifferencePaid,Converter={StaticResource moneyToStringConverter}}"  MinWidth="100"></TextBox>
