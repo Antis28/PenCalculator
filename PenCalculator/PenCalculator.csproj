@@ -70,6 +70,7 @@
     <Compile Include="Infrastructure\Converters\BoolToVisibleConverter.cs" />
     <Compile Include="Infrastructure\Converters\MoneyToStringConverter.cs" />
     <Compile Include="Infrastructure\Commands\SaveToJsonFile.cs" />
+    <Compile Include="Infrastructure\Services\JsonService.cs" />
     <Compile Include="Infrastructure\Services\StringFormat.cs" />
     <Compile Include="Models\Model.cs" />
     <Compile Include="Models\PaidOutM.cs" />

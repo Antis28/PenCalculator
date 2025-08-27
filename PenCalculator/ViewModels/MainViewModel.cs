@@ -8,6 +8,7 @@ using System.Linq;
 using System.Windows.Input;
 using System.Windows.Markup;
 using Newtonsoft.Json;
+using PenCalculator.Infrastructure.Services;
 
 namespace PenCalculator.ViewModels
 {
@@ -17,10 +18,12 @@ namespace PenCalculator.ViewModels
         private double _PayTotalVal;
         private double _PayTotal;
         private string _FileName;
+        private string _TimeStep;
 
         public string FileName { get => _FileName; set => Set(ref _FileName, value); }
 
         public double PayTotal { get => _PayTotal; set => Set(ref _PayTotal, value); }
+        public string TimeStep { get => _TimeStep; set => Set(ref _TimeStep, value); }
 
 
         #region PaidTotal : string - Выплачено всего
@@ -231,21 +234,19 @@ namespace PenCalculator.ViewModels
 
         private void OnSaveToFileCommandExecuted(object p)
         {
+           // this.FileName = this.FileName.Replace(":", "");
+            
             var df = new DataFile()
             {
                 FileName = this.FileName,
-                PaidOut = PaidOut,
-                DifferencePaid = DifferencePaid,
-                PaidTotal = PaidTotal,
-                PaymentPurposes = PaymentPurposes
+                PaidOut = this.PaidOut,
+                DifferencePaid = this.DifferencePaid,
+                PaidTotal = this.PaidTotal,
+                PaymentPurposes = this.PaymentPurposes
             };
-
-            var jsonText = JsonConvert.SerializeObject(df, Formatting.Indented);
-            var wr = File.CreateText($"{df.FileName}.JSON");
-
-            wr.AutoFlush = true;
-            wr.Write(jsonText);
-            wr.Close();
+            this.FileName = JsonService.Save(df);
+            var now = DateTime.Now;
+            TimeStep = $"{now.Hour}:{now.Minute}:{now.Second}";
         }
 
         #endregion
