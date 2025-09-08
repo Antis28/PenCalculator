@@ -135,7 +135,15 @@ namespace PenCalculator.Models
 
             var m = r.Months+y*12;
 
-            DateLength = m.ToString();
+            if (d == 0)
+            {
+                DateLength = $"{m.ToString()} M";
+            }
+            else 
+            {
+                DateLength = $"{m} M, {d} Д";
+            }
+            
 
             // Для ячейки первого месяца
             if (StartDate != startDay)
