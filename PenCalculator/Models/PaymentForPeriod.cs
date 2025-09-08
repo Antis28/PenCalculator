@@ -26,7 +26,6 @@ namespace PenCalculator.Models
                     OnPropertyChanged(nameof(EndDate));
                 }
 
-                CalcPaySizeOnPeriod();
                 OnPropertyChanged(nameof(PaySizeOnPeriod));
 
             }
@@ -47,7 +46,6 @@ namespace PenCalculator.Models
                     StartDate = startDay;
                     OnPropertyChanged(nameof(StartDate));
                 }
-                CalcPaySizeOnPeriod();
                 OnPropertyChanged(nameof(PaySizeOnPeriod));
             }
         }
@@ -63,7 +61,6 @@ namespace PenCalculator.Models
             set
             {
                 Set(ref _PaySizeFull, value);
-                CalcPaySizeOnPeriod();
                 OnPropertyChanged(nameof(PaySizeOnPeriod));
             }
         }
@@ -139,7 +136,7 @@ namespace PenCalculator.Models
             {
                 DateLength = $"{m.ToString()} M";
             }
-            else 
+            else
             {
                 DateLength = $"{m} M, {d} Д";
             }
@@ -160,8 +157,8 @@ namespace PenCalculator.Models
 
             paySizeOnPeriod += PaySizeFull * m;
 
-            
 
+            //_PaySizeOnPeriod = paySizeOnPeriod;
             return paySizeOnPeriod;
         }
 
