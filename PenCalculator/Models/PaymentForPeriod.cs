@@ -132,7 +132,8 @@ namespace PenCalculator.Models
 
             var m = r.Months+y*12;
 
-            if (d == 0)
+           
+            if (d != 0)
             {
                 DateLength = $"{m.ToString()} M";
             }
@@ -147,11 +148,13 @@ namespace PenCalculator.Models
             {
                 var dayStart = date1.Day;// дней с начала месяца
                 paySizeOnPeriod = ((double)PaySizeFull / daysInMonthForStart) * (daysInMonthForStart - dayStart + 1);
+                DateLength = $"{m} M, {daysInMonthForStart - dayStart + 1} Д";
             }
             // Для ячейки последнего месяца
             if (EndDate != endDay)
             {
                 paySizeOnPeriod = ((double)PaySizeFull / endDay.Day) * d;
+              
             }
 
 
