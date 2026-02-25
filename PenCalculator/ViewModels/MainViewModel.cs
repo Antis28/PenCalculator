@@ -213,6 +213,13 @@ namespace PenCalculator.ViewModels
 
         private void OnAddPaidOutCommandExecuted(object p)
         {
+            AddPaidOut();
+
+            OnPropertyChanged(nameof(PaidOut));
+        }
+
+        private void AddPaidOut()
+        {
             double paySize = 0;
             var last = PaidOut.LastOrDefault();
 
@@ -227,8 +234,6 @@ namespace PenCalculator.ViewModels
                 EndDate = newEndDate,
                 PaySizeFull = paySize,
             });
-
-            OnPropertyChanged(nameof(PaidOut));
         }
 
         #endregion
@@ -403,9 +408,9 @@ namespace PenCalculator.ViewModels
             };
             PaidOut = new ObservableCollection<PaymentForPeriod>
             {
-                new PaymentForPeriod(),
-                new PaymentForPeriod(),
+                new PaymentForPeriod(){IsAllVisible = false},
             };
+            AddPaidOut();
 
             CalculatePaymentCommand =
                 new LambdaCommand(OnCalculatePaymentCommandExecuted, CanCalculatePaymentCommandExecute);
