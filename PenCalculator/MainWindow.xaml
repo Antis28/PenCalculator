@@ -47,6 +47,9 @@
                 <Button Style="{StaticResource DangerButton}" Width="100"    HorizontalAlignment="Center" Content="Удалить"    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.RemovePeriodCommand}" Margin="5,5"/>
                 
                 <Button Style="{StaticResource BaseStyle}" Width="100"    HorizontalAlignment="Right" Content="Очистить"    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.ClearPeriodCommand}" Margin="5,5" Background="White" Foreground="#FFFF0505" FontSize="16" FontWeight="Bold"/>
+
+                <Button Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.MovePeriodDownCommand}" Width="40"   Style="{StaticResource DangerButton}" HorizontalAlignment="Center" Content="↓" Margin="5,5" Background="#FF3A6F00"/>
+                <Button Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.MovePeriodUpCommand}" Width="40"   Style="{StaticResource DangerButton}" HorizontalAlignment="Center" Content="↑" Margin="5,5" Background="#FF00A151"/>
             </StackPanel>
         </StackPanel>
         <ListBox Grid.Row="1" ItemsSource="{Binding PaymentPurposes, UpdateSourceTrigger=PropertyChanged}" 
@@ -73,8 +76,10 @@
                         <TextBox  Text="{Binding PaySizeFull,Converter={StaticResource moneyToStringConverter} , Mode=TwoWay}" Margin="5,0" VerticalAlignment="Center" MinWidth="100"/>
                         <!--StringFormat={}{0:F2}-->
                         <TextBox Text="{Binding PaySizeOnPeriod,Converter={StaticResource moneyToStringConverter}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay }"   Margin="5,0" VerticalAlignment="Center" MinWidth="100"/>
+                        <!-- 
                         <Button Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.MovePeriodDownCommand}" Width="40"   Style="{StaticResource DangerButton}" HorizontalAlignment="Center" Content="↓" Margin="5,5" Background="#FF3A6F00"/>
                         <Button Command="{Binding CalculatePaidCommand}" Width="40"   Style="{StaticResource DangerButton}" HorizontalAlignment="Center" Content="↑" Margin="5,5" Background="#FF00A151"/>
+                        -->
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>

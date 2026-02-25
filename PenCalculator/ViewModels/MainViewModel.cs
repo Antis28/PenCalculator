@@ -181,7 +181,28 @@ namespace PenCalculator.ViewModels
         }
 
         #endregion
+        #region MovePeriodUpCommand
+        public ICommand MovePeriodUpCommand { get; }
+        private bool CanMovePeriodUpCommandExecute(object p) => true;
 
+        private void OnMovePeriodUpCommandExecuted(object p)
+        {
+            //TODO: Получить выделеную строку(на которой кнопка)
+            PaymentForPeriod pp = p as PaymentForPeriod;
+
+            var id = PaymentPurposes.IndexOf(SelectedPaymentPurposes);
+            if (id - 1 < 0 )
+            {
+                return;
+            }
+
+            (PaymentPurposes[id - 1], PaymentPurposes[id]) = (PaymentPurposes[id], PaymentPurposes[id - 1]);
+            SelectedPaymentPurposes = PaymentPurposes[id - 1];
+
+            OnPropertyChanged(nameof(PaymentPurposes));
+        }
+
+        #endregion
         #region MovePeriodDownCommand
         public ICommand MovePeriodDownCommand { get; }
         private bool CanMovePeriodDownCommandExecute(object p) => true;
@@ -190,6 +211,16 @@ namespace PenCalculator.ViewModels
         {
             //TODO: Получить выделеную строку(на которой кнопка)
             PaymentForPeriod pp = p as PaymentForPeriod;
+
+            var id = PaymentPurposes.IndexOf(SelectedPaymentPurposes);
+            if (id+1 == PaymentPurposes.Count || id == -1)
+            {
+                return;
+            }
+
+            (PaymentPurposes[id + 1], PaymentPurposes[id]) = (PaymentPurposes[id], PaymentPurposes[id + 1]);
+            SelectedPaymentPurposes = PaymentPurposes[id+1];
+
 
             //PaymentPurposes
 
@@ -421,7 +452,9 @@ namespace PenCalculator.ViewModels
                 new LambdaCommand(OnRemovePeriodCommandExecuted, CanRemovePeriodCommandExecute);
             MovePeriodDownCommand =
                 new LambdaCommand(OnMovePeriodDownCommandExecuted, CanMovePeriodDownCommandExecute);
-           
+            MovePeriodUpCommand =
+                new LambdaCommand(OnMovePeriodUpCommandExecuted, CanMovePeriodUpCommandExecute);
+
 
             AddPaidOutCommand =
                 new LambdaCommand(OnAddPaidOutCommandExecuted, CanAddPaidOutCommandExecute);
