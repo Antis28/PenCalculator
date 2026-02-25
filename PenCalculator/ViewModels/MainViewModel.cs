@@ -252,6 +252,51 @@ namespace PenCalculator.ViewModels
 
         #endregion
 
+        #region ClearPeriodCommand
+        public ICommand ClearPeriodCommand { get; }
+        private bool CanClearPeriodCommandExecute(object p) => true;
+
+        private void OnClearPeriodCommandExecuted(object p)
+        {
+            var len = PaymentPurposes.Count;
+            if (len == 1)
+            {
+                return;
+            }
+            
+            for (int i = PaymentPurposes.Count-1; i > 0; i--)
+            {
+                PaymentPurposes.Remove(PaymentPurposes[i]);
+            }
+
+            SelectedPaymentPurposes =  PaymentPurposes[0];
+
+            OnPropertyChanged(nameof(PaymentPurposes));
+        }
+
+        #endregion
+        #region ClearPeriodPaidCommand
+        public ICommand ClearPeriodPaidCommand { get; }
+        private bool CanClearPeriodPaidCommandExecute(object p) => true;
+
+        private void OnClearPeriodPaidCommandExecuted(object p)
+        {
+            var len = PaidOut.Count;
+            if (len == 1)
+            {
+                return;
+            }
+
+            for (int i = PaidOut.Count - 1; i > 0; i--)
+            {
+                PaidOut.Remove(PaidOut[i]);
+            }
+
+            SelectedPaidOut = PaymentPurposes[0];
+            OnPropertyChanged(nameof(PaidOut));
+        }
+
+        #endregion
 
 
         #region SaveToFileCommand
@@ -381,6 +426,10 @@ namespace PenCalculator.ViewModels
                 new LambdaCommand(OnCalculatePaidCommandExecuted, CanCalculatePaidCommandExecute);
             SaveToFileCommand =
                 new LambdaCommand(OnSaveToFileCommandExecuted, CanSaveToFileCommandExecute);
+            ClearPeriodCommand =
+                new LambdaCommand(OnClearPeriodCommandExecuted, CanClearPeriodCommandExecute);
+            ClearPeriodPaidCommand =
+                new LambdaCommand(OnClearPeriodPaidCommandExecuted, CanClearPeriodPaidCommandExecute);
 
             FileName =
                 $"{DateTime.Now.Year}.{DateTime.Now.Month}.{DateTime.Now.Day}_{DateTime.Now.Hour}.{DateTime.Now.Minute}.{DateTime.Now.Second}";

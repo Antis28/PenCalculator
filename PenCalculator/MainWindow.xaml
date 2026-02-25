@@ -37,15 +37,16 @@
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="Имя файла:" Margin="5,0" VerticalAlignment="Center" HorizontalAlignment="Left"/>
                 <TextBox Text="{Binding FileName, Mode=TwoWay}" MinWidth="200" Margin="5,0" VerticalAlignment="Center" HorizontalAlignment="Left"/>
-
+                <Button Style="{StaticResource BaseStyle}" Width="100"    HorizontalAlignment="Right" Content="Сохранить"    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.SaveToFileCommand}" Margin="5,5"/>
+                <TextBlock Text="{Binding TimeStep}" Margin="5,5"></TextBlock>
             </StackPanel>
             
             <TextBlock Text="Положено:" Margin="5,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             <StackPanel  Orientation="Horizontal">
                 <Button Style="{StaticResource PrimaryButton}" Width="100"   HorizontalAlignment="Center" Content="Добавить"  Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.AddPeriodCommand}"  Margin="5,5"/>
                 <Button Style="{StaticResource DangerButton}" Width="100"    HorizontalAlignment="Center" Content="Удалить"    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.RemovePeriodCommand}" Margin="5,5"/>
-                <Button Style="{StaticResource BaseStyle}" Width="100"    HorizontalAlignment="Right" Content="Сохранить"    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.SaveToFileCommand}" Margin="5,5"/>
-                <TextBlock Text="{Binding TimeStep}" Margin="5,5"></TextBlock>
+                
+                <Button Style="{StaticResource BaseStyle}" Width="100"    HorizontalAlignment="Right" Content="Очистить"    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.ClearPeriodCommand}" Margin="5,5" Background="White" Foreground="#FFFF0505" FontSize="16" FontWeight="Bold"/>
             </StackPanel>
         </StackPanel>
         <ListBox Grid.Row="1" ItemsSource="{Binding PaymentPurposes, UpdateSourceTrigger=PropertyChanged}" 
@@ -88,6 +89,7 @@
         <StackPanel Grid.Row="4" Orientation="Horizontal">
             <Button Style="{StaticResource PrimaryButton}" Width="100"  HorizontalAlignment="Center" Content="Добавить"  Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.AddPaidOutCommand}" Margin="5,5"/>
             <Button Style="{StaticResource DangerButton}" Width="100"   HorizontalAlignment="Center" Content="Удалить"    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.RemovePaidCommand}" Margin="5,5"/>
+            <Button Style="{StaticResource BaseStyle}" Width="100"    HorizontalAlignment="Right" Content="Очистить"    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.ClearPeriodPaidCommand}" Margin="5,5" Background="White" Foreground="#FFFF0505" FontSize="16" FontWeight="Bold"/>
         </StackPanel>
         <ListBox Grid.Row="5" ItemsSource="{Binding PaidOut, UpdateSourceTrigger=PropertyChanged}" 
                  SelectedItem="{Binding SelectedPaidOut}" SelectionMode="Single">
