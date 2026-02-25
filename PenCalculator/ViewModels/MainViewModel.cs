@@ -162,7 +162,6 @@ namespace PenCalculator.ViewModels
         }
 
         #endregion
-
         #region RemovePeriodCommand
         public ICommand RemovePeriodCommand { get; }
         private bool CanRemovePeriodCommandExecute(object p) => PaymentPurposes.Count > 1;
@@ -178,6 +177,31 @@ namespace PenCalculator.ViewModels
             var id = PaymentPurposes.IndexOf(SelectedPaymentPurposes);
             PaymentPurposes.Remove(SelectedPaymentPurposes);
             SelectedPaymentPurposes = id - 1 > -1 ? PaymentPurposes[id - 1] : PaymentPurposes[0];
+            OnPropertyChanged(nameof(PaymentPurposes));
+        }
+
+        #endregion
+
+        #region MovePeriodDownCommand
+        public ICommand MovePeriodDownCommand { get; }
+        private bool CanMovePeriodDownCommandExecute(object p) => true;
+
+        private void OnMovePeriodDownCommandExecuted(object p)
+        {
+            //TODO: Получить выделеную строку(на которой кнопка)
+            PaymentForPeriod pp = p as PaymentForPeriod;
+
+            //PaymentPurposes
+
+
+
+
+            //PaymentPurposes.Add(new PaymentForPeriod()
+            //{
+            //    StartDate = newStartDate,
+            //    EndDate = newEndDate,
+            //    PaySizeFull = paySize,
+            //});
             OnPropertyChanged(nameof(PaymentPurposes));
         }
 
@@ -228,14 +252,16 @@ namespace PenCalculator.ViewModels
 
         #endregion
 
+
+
         #region SaveToFileCommand
         public ICommand SaveToFileCommand { get; }
         private bool CanSaveToFileCommandExecute(object p) => true;
 
         private void OnSaveToFileCommandExecuted(object p)
         {
-           // this.FileName = this.FileName.Replace(":", "");
-            
+            // this.FileName = this.FileName.Replace(":", "");
+
             var df = new DataFile()
             {
                 FileName = this.FileName,
@@ -259,31 +285,44 @@ namespace PenCalculator.ViewModels
             // Создаем дочернюю view-model и даём ей ссылку на главную модель.
             // CountriesStatisticsVM = new CountriesStatisticsViewModel(this);
 
+            // Последний день текущего месяца
+            DateTime now = DateTime.Now;
+            DateTime lastDayLastMonth = new DateTime(now.Year, now.Month,
+                                             DateTime.DaysInMonth(now.Year, now.Month));
+
             PaymentPurposes = new ObservableCollection<PaymentForPeriod>
             {
                 new PaymentForPeriod
                 {
                     ID = 1,
                     StartDate = DateTime.Parse("01.03.2023"),
-                    EndDate = DateTime.Parse("31.03.2023"),
+                    EndDate = DateTime.Parse("31.12.2023"),
                     PaySizeFull = 10_000
                 },
 
-                //new PaymentForPeriod
-                //{
-                //    ID = 2,
-                //    StartDate = DateTime.Parse("01.04.2023"),
-                //    EndDate = DateTime.Parse("31.05.2023"),
-                //    PaySizeFull = 10_000
-                //},
+                new PaymentForPeriod
+                {
+                    ID = 2,
+                    StartDate = DateTime.Parse("01.01.2024"),
+                    EndDate = DateTime.Parse("31.12.2024"),
+                    PaySizeFull = 10_000
+                },
 
-                //new PaymentForPeriod
-                //{
-                //    ID = 3,
-                //    StartDate = DateTime.Parse("01.06.2023"),
-                //    EndDate = DateTime.Parse("31.12.2023"),
-                //    PaySizeFull = 10_000
-                //},
+                new PaymentForPeriod
+                {
+                    ID = 2,
+                    StartDate = DateTime.Parse("01.01.2025"),
+                    EndDate = DateTime.Parse("31.12.2025"),
+                    PaySizeFull = 10_000
+                },
+
+                new PaymentForPeriod
+                {
+                    ID = 3,
+                    StartDate = DateTime.Parse("01.01.2026"),
+                    EndDate = lastDayLastMonth,
+                    PaySizeFull = 10_000
+                },
 
                 //new PaymentForPeriod
                 //{
@@ -325,10 +364,15 @@ namespace PenCalculator.ViewModels
 
             CalculatePaymentCommand =
                 new LambdaCommand(OnCalculatePaymentCommandExecuted, CanCalculatePaymentCommandExecute);
+            
             AddPeriodCommand =
                 new LambdaCommand(OnAddPeriodCommandExecuted, CanAddPeriodCommandExecute);
             RemovePeriodCommand =
                 new LambdaCommand(OnRemovePeriodCommandExecuted, CanRemovePeriodCommandExecute);
+            MovePeriodDownCommand =
+                new LambdaCommand(OnMovePeriodDownCommandExecuted, CanMovePeriodDownCommandExecute);
+           
+
             AddPaidOutCommand =
                 new LambdaCommand(OnAddPaidOutCommandExecuted, CanAddPaidOutCommandExecute);
             RemovePaidCommand =
