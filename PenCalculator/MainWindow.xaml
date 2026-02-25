@@ -10,7 +10,7 @@
         xmlns:c="clr-namespace:PenCalculator.Infrastructure.Converters"
         xmlns:models="clr-namespace:PenCalculator.Models"
         xmlns:System="clr-namespace:System;assembly=mscorlib"
-        Title="MainWindow" Height="550" Width="800"
+        Title="Pension calculator" Height="800" Width="900"
         Language="ru-ru"
         Drop="SetDropCommand"
         AllowDrop="True"
@@ -72,6 +72,8 @@
                         <TextBox  Text="{Binding PaySizeFull,Converter={StaticResource moneyToStringConverter} , Mode=TwoWay}" Margin="5,0" VerticalAlignment="Center" MinWidth="100"/>
                         <!--StringFormat={}{0:F2}-->
                         <TextBox Text="{Binding PaySizeOnPeriod,Converter={StaticResource moneyToStringConverter}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay }"   Margin="5,0" VerticalAlignment="Center" MinWidth="100"/>
+                        <Button Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.MovePeriodDownCommand}" Width="40"   Style="{StaticResource DangerButton}" HorizontalAlignment="Center" Content="↓" Margin="5,5" Background="#FF3A6F00"/>
+                        <Button Command="{Binding CalculatePaidCommand}" Width="40"   Style="{StaticResource DangerButton}" HorizontalAlignment="Center" Content="↑" Margin="5,5" Background="#FF00A151"/>
                     </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>

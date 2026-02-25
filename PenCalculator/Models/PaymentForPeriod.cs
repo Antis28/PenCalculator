@@ -133,13 +133,9 @@ namespace PenCalculator.Models
             var m = r.Months+y*12;
 
            
-            if (d != 0)
+            if (d == 0)
             {
                 DateLength = $"{m.ToString()} M";
-            }
-            else
-            {
-                DateLength = $"{m} M, {d} Д";
             }
             
 
@@ -154,7 +150,7 @@ namespace PenCalculator.Models
             if (EndDate != endDay)
             {
                 paySizeOnPeriod = ((double)PaySizeFull / endDay.Day) * d;
-              
+                DateLength = $"{m} M, {d} Д";
             }
 
 
