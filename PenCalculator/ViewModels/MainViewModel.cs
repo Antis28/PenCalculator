@@ -76,10 +76,10 @@ namespace PenCalculator.ViewModels
 
         private void OnCalculatePaymentCommandExecuted(object p)
         {
-            CalcPayment();
+            CalcPaymentTotal();
         }
 
-        private void CalcPayment()
+        private double CalcPaymentTotal()
         {
             // сумма за период
             double payTotal = 0;
@@ -91,6 +91,7 @@ namespace PenCalculator.ViewModels
 
             _PayTotalVal = payTotal;
             PayTotal = Math.Round(payTotal, 2);
+            return PayTotal;
         }
 
         #endregion
@@ -101,10 +102,20 @@ namespace PenCalculator.ViewModels
 
         private void OnCalculatePaidCommandExecuted(object p)
         {
+            CalcDifferentSumm();
+        }
 
-            CalcPayment();
+        private void CalcDifferentSumm()
+        {
+            // Положеная сумма за период
+            CalcPaymentTotal();
+            // Выплаченая сумма за период
+            CalcPaidTotal();
+            DifferencePaid = Math.Round(_PayTotalVal - _PaidTotal, 2);
+        }
 
-            // сумма за период
+        private double CalcPaidTotal()
+        {
             double paidTotal = 0;
 
             foreach (var group in PaidOut)
@@ -113,8 +124,7 @@ namespace PenCalculator.ViewModels
             }
 
             PaidTotal = Math.Round(paidTotal, 2);
-
-            DifferencePaid = Math.Round(_PayTotalVal - paidTotal, 2);
+            return paidTotal;
         }
 
         #endregion
@@ -191,7 +201,7 @@ namespace PenCalculator.ViewModels
             PaymentForPeriod pp = p as PaymentForPeriod;
 
             var id = PaymentPurposes.IndexOf(SelectedPaymentPurposes);
-            if (id - 1 < 0 )
+            if (id - 1 < 0)
             {
                 return;
             }
@@ -213,13 +223,13 @@ namespace PenCalculator.ViewModels
             PaymentForPeriod pp = p as PaymentForPeriod;
 
             var id = PaymentPurposes.IndexOf(SelectedPaymentPurposes);
-            if (id+1 == PaymentPurposes.Count || id == -1)
+            if (id + 1 == PaymentPurposes.Count || id == -1)
             {
                 return;
             }
 
             (PaymentPurposes[id + 1], PaymentPurposes[id]) = (PaymentPurposes[id], PaymentPurposes[id + 1]);
-            SelectedPaymentPurposes = PaymentPurposes[id+1];
+            SelectedPaymentPurposes = PaymentPurposes[id + 1];
 
 
             //PaymentPurposes
@@ -299,13 +309,13 @@ namespace PenCalculator.ViewModels
             {
                 return;
             }
-            
-            for (int i = PaymentPurposes.Count-1; i > 0; i--)
+
+            for (int i = PaymentPurposes.Count - 1; i > 0; i--)
             {
                 PaymentPurposes.Remove(PaymentPurposes[i]);
             }
 
-            SelectedPaymentPurposes =  PaymentPurposes[0];
+            SelectedPaymentPurposes = PaymentPurposes[0];
 
             OnPropertyChanged(nameof(PaymentPurposes));
         }
@@ -445,7 +455,7 @@ namespace PenCalculator.ViewModels
 
             CalculatePaymentCommand =
                 new LambdaCommand(OnCalculatePaymentCommandExecuted, CanCalculatePaymentCommandExecute);
-            
+
             AddPeriodCommand =
                 new LambdaCommand(OnAddPeriodCommandExecuted, CanAddPeriodCommandExecute);
             RemovePeriodCommand =
@@ -494,8 +504,8 @@ namespace PenCalculator.ViewModels
                 PaymentPurposes.Add(item);
             }
             FileName = dataFile.FileName;
-            DifferencePaid = dataFile.DifferencePaid;
-            PaidTotal = dataFile.PaidTotal;
+
+            CalcDifferentSumm();
         }
     }
 }
