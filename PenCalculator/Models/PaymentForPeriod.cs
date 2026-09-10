@@ -75,7 +75,13 @@ namespace PenCalculator.Models
         ///<summary>Сумма за период </summary>
         public double PaySizeOnPeriod
         {
-            get => CalcPaySizeOnPeriod();
+            get
+            {
+                if (_PaySizeFull <= 0)
+                    return _PaySizeOnPeriod;  // PaySizeFull пустой — ручной ввод
+
+                return CalcPaySizeOnPeriod(); // PaySizeFull заполнен — пересчёт
+            }
             set
             {
                 Set(ref _PaySizeOnPeriod, value);
@@ -99,20 +105,19 @@ namespace PenCalculator.Models
         #endregion
 
         #region IsAllVisible : bool - видимость месяцев
-        ///<summary>Длинна периода в месяцах</summary>
+        ///<summary>Видимость "Длинна периода в месяцах"</summary>
         private bool _IsAllVisible = true;
-        ///<summary>Длинна периода в месяцах</summary>
-        public bool IsAllVisible { get => _IsAllVisible; set => Set(ref _IsAllVisible, value); }
+        ///<summary>Видимость "Длинна периода в месяцах"</summary>
+        public bool IsAllVisible { 
+            get => _IsAllVisible;
+            set => Set(ref _IsAllVisible, value);
+        }
         #endregion
 
 
 
         double CalcPaySizeOnPeriod()
         {
-            if (_PaySizeOnPeriod > 0)
-            {
-                return _PaySizeOnPeriod;
-            }
             var paySizeOnPeriod = 0.0;
             // первый день 1-го месяца
             DateTime startDay = new DateTime(StartDate.Year, StartDate.Month, 1);
