@@ -82,7 +82,7 @@
                                         Converter={StaticResource doubleWithDotOrCommaConverter},
                                         UpdateSourceTrigger=LostFocus,
                                         Mode=TwoWay}"
-                                 b:CopyCleanBehavior.IsEnabled="True"
+                                 b:CopyPasteCleanBehavior.IsEnabled="True"
                                  Margin="5,0" VerticalAlignment="Center" MinWidth="100"/>
                         <!--StringFormat={}{0:F2}-->
                         <TextBox  Text="{Binding PaySizeOnPeriod,Converter={StaticResource moneyToStringConverter}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay }"   Margin="5,0" VerticalAlignment="Center" MinWidth="100"/>
@@ -146,7 +146,7 @@
                                             Converter={StaticResource doubleWithDotOrCommaConverter},
                                             UpdateSourceTrigger=LostFocus, 
                                             Mode=TwoWay}"
-                                 b:CopyCleanBehavior.IsEnabled="True"
+                                 b:CopyPasteCleanBehavior.IsEnabled="True"
                                  Margin="5,0" VerticalAlignment="Center" MinWidth="100"/>
                         <!--StringFormat={}{0:F2}-->
                         <TextBox Text="{Binding PaySizeOnPeriod,Converter={StaticResource moneyToStringConverter}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay }"   Margin="5,0" VerticalAlignment="Center" MinWidth="100"/>
