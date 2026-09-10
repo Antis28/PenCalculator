@@ -23,6 +23,8 @@
         <c:MoneyToStringConverter x:Key="moneyToStringConverter" />
         <c:BoolToVisibleConverter x:Key="boolToVisibleConverter" />
         <c:BoolToTextConverter x:Key="boolToTextConverter"/>
+        <c:DoubleWithDotOrCommaConverter x:Key="doubleWithDotOrCommaConverter"/>
+        
     </Window.Resources>
     <Grid Margin="3">
         <Grid.RowDefinitions>
@@ -74,8 +76,9 @@
                         <TextBlock Text="Период:" Margin="5,0" VerticalAlignment="Center"/>
                         <TextBlock Text="{Binding DateLength}" Margin="5,0" VerticalAlignment="Center"/>
                         <TextBlock Text="Размер:" Margin="5,0" VerticalAlignment="Center"/>
-                        <TextBox Text="{Binding PaySizeFull, StringFormat={}{0:N}, ConverterCulture='ru-RU',
-                            UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                        <TextBox Text="{Binding PaySizeFull,
+                                        Converter={StaticResource doubleWithDotOrCommaConverter},
+                                        UpdateSourceTrigger=LostFocus}"
                                  Margin="5,0" VerticalAlignment="Center" MinWidth="100"/>
                         <!--StringFormat={}{0:F2}-->
                         <TextBox  Text="{Binding PaySizeOnPeriod,Converter={StaticResource moneyToStringConverter}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay }"   Margin="5,0" VerticalAlignment="Center" MinWidth="100"/>
@@ -135,7 +138,10 @@
                             Visibility="{Binding IsAllVisible, Converter={StaticResource boolToVisibleConverter} }"
                             Text="Размер:" Margin="5,0" VerticalAlignment="Center"/>
                         <TextBox Visibility="{Binding IsAllVisible, Converter={StaticResource boolToVisibleConverter} }"  
-                                 Text="{Binding PaySizeFull, StringFormat={}{0:N}, ConverterCulture='ru-RU', UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                                 Text="{Binding PaySizeFull,
+                                         Converter={StaticResource doubleWithDotOrCommaConverter},
+                                            UpdateSourceTrigger=LostFocus, 
+                                    Mode=TwoWay}" 
                                  Margin="5,0" VerticalAlignment="Center" MinWidth="100"/>
                         <!--StringFormat={}{0:F2}-->
                         <TextBox Text="{Binding PaySizeOnPeriod,Converter={StaticResource moneyToStringConverter}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay }"   Margin="5,0" VerticalAlignment="Center" MinWidth="100"/>

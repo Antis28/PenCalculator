@@ -92,13 +92,7 @@ namespace PenCalculator.Models
             }
         }
         #endregion
-
-
-        #region PaySizeFullString : string - Весь период строкой
-        ///<summary>Весь период строкой</summary>
-        //public string PaySizeFullString => StringFormat.FormatCulture(_paySizeFull);
-
-        #endregion
+        
 
 
         #region DateLength : string - Длинна периода в месяцах
