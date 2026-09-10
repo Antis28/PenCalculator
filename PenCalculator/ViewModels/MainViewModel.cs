@@ -9,6 +9,7 @@ using System.Windows.Input;
 using System.Windows.Markup;
 using Newtonsoft.Json;
 using PenCalculator.Infrastructure.Services;
+using System.Globalization;
 using System.Runtime.Remoting.Contexts;
 
 namespace PenCalculator.ViewModels
@@ -476,7 +477,7 @@ namespace PenCalculator.ViewModels
                 new LambdaCommand(OnClearPeriodPaidCommandExecuted, CanClearPeriodPaidCommandExecute);
 
             FileName =
-                DateTime.Now.ToString("yyyy.MM.dd_HH.mm.ss");
+                DateTime.Now.ToString("yyyy-MM-dd_HH-mm_ss", CultureInfo.InvariantCulture);
             if (App.StartUpArg != null)
             {
                 LoadFromFile(App.StartUpArg);
