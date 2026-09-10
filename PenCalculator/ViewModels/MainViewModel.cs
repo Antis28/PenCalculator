@@ -178,6 +178,8 @@ namespace PenCalculator.ViewModels
 
         private void OnRemovePeriodCommandExecuted(object p)
         {
+            if (SelectedPaymentPurposes == null)
+                return;
             var len = PaymentPurposes.Count;
             if (len == 1)
             {
@@ -197,9 +199,6 @@ namespace PenCalculator.ViewModels
 
         private void OnMovePeriodUpCommandExecuted(object p)
         {
-            //TODO: Получить выделеную строку(на которой кнопка)
-            PaymentForPeriod pp = p as PaymentForPeriod;
-
             var id = PaymentPurposes.IndexOf(SelectedPaymentPurposes);
             if (id <= 0)
             {
@@ -219,9 +218,6 @@ namespace PenCalculator.ViewModels
 
         private void OnMovePeriodDownCommandExecuted(object p)
         {
-            //TODO: Получить выделеную строку(на которой кнопка)
-            PaymentForPeriod pp = p as PaymentForPeriod;
-
             var id = PaymentPurposes.IndexOf(SelectedPaymentPurposes);
             if (id < 0 || id + 1 >= PaymentPurposes.Count)
             {
@@ -284,6 +280,8 @@ namespace PenCalculator.ViewModels
 
         private void OnRemovePaidCommandExecuted(object p)
         {
+            if (SelectedPaidOut == null)
+                return;
             var len = PaidOut.Count;
             if (len == 0)
             {
@@ -328,10 +326,10 @@ namespace PenCalculator.ViewModels
         private void OnClearPeriodPaidCommandExecuted(object p)
         {
             var len = PaidOut.Count;
-            if (PaidOut.Count <= 1)
+            if (len <= 1)
                 return;
 
-            for (int i = PaidOut.Count - 1; i > 0; i--)
+            for (int i = len - 1; i > 0; i--)
             {
                 PaidOut.Remove(PaidOut[i]);
             }
