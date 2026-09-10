@@ -476,7 +476,7 @@ namespace PenCalculator.ViewModels
                 new LambdaCommand(OnClearPeriodPaidCommandExecuted, CanClearPeriodPaidCommandExecute);
 
             FileName =
-                $"{DateTime.Now.Year}.{DateTime.Now.Month}.{DateTime.Now.Day}_{DateTime.Now.Hour}.{DateTime.Now.Minute}.{DateTime.Now.Second}";
+                DateTime.Now.ToString("yyyy.MM.dd_HH.mm.ss");
             if (App.StartUpArg != null)
             {
                 LoadFromFile(App.StartUpArg);
