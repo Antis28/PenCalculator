@@ -19,13 +19,13 @@ namespace PenCalculator.Models
                 {
                     // последний день последнего месяца
                     // кол. дней в последнем месяце
-                    int daysInMonthForEnd = DateTime.DaysInMonth(_startDate.Year, _startDate.Month);
-                    DateTime endDay = new DateTime(_startDate.Year, _startDate.Month, daysInMonthForEnd);
 
-                    EndDate = endDay;
+                    int days = DateTime.DaysInMonth(_startDate.Year, _startDate.Month);
+                    // Прямая запись в поле, без вызова сеттера EndDate
+                    _endDate = new DateTime(_startDate.Year, _startDate.Month, days);
                     OnPropertyChanged(nameof(EndDate));
                 }
-
+                OnPropertyChanged(nameof(StartDate));
                 OnPropertyChanged(nameof(PaySizeOnPeriod));
 
             }
@@ -41,11 +41,11 @@ namespace PenCalculator.Models
                 if (_endDate < _startDate)
                 {
                     // первый день 1-го месяца
-                    DateTime startDay = new DateTime(_endDate.Year, _endDate.Month, 1);
-
-                    StartDate = startDay;
+                    // Прямая запись в поле, без вызова сеттера StartDate
+                    _startDate = new DateTime(_endDate.Year, _endDate.Month, 1);
                     OnPropertyChanged(nameof(StartDate));
                 }
+                OnPropertyChanged(nameof(EndDate));
                 OnPropertyChanged(nameof(PaySizeOnPeriod));
             }
         }
@@ -126,18 +126,18 @@ namespace PenCalculator.Models
             LocalDate date1 = new LocalDate(StartDate.Year, StartDate.Month, StartDate.Day);
             LocalDate date2 = new LocalDate(EndDate.Year, EndDate.Month, EndDate.Day);
             var r = (date2 + Period.FromDays(1)) - date1;
-            
+
             var d = r.Days;
             var y = r.Years;
 
-            var m = r.Months+y*12;
+            var m = r.Months + y * 12;
 
-           
+
             if (d == 0)
             {
                 DateLength = $"{m.ToString()} M";
             }
-            
+
 
             // Для ячейки первого месяца
             if (StartDate != startDay)
