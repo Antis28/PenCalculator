@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PenCalculator.Models
 {
-    internal abstract class Model: INotifyPropertyChanged
+    public abstract class Model: INotifyPropertyChanged
     {
         /// <summary>
         /// Служит для обновления свойства для которого определено поле 

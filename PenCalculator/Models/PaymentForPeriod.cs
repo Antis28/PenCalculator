@@ -4,7 +4,7 @@ using PenCalculator.Infrastructure.Services;
 
 namespace PenCalculator.Models
 {
-    internal class PaymentForPeriod : Model
+    public class PaymentForPeriod : Model
     {
         public int ID { get; set; }
 
