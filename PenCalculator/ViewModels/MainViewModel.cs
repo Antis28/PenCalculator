@@ -358,7 +358,7 @@ namespace PenCalculator.ViewModels
             };
             this.FileName = JsonService.Save(df);
             var now = DateTime.Now;
-            TimeStep = $"{now.Hour}:{now.Minute}:{now.Second}";
+            TimeStep = now.ToString("HH:mm:ss");
         }
 
         #endregion
