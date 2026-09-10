@@ -165,11 +165,10 @@ namespace PenCalculator.ViewModels
 
         private static DateTime NewStartDate(PaymentForPeriod last)
         {
-            var oldStartDate = last.StartDate;
-            var oldEndDate = last.EndDate;
+            if (last == null)
+                return DateTime.Today;
 
-            var newStartDate = last.EndDate.AddDays(1);
-            return newStartDate;
+            return last.EndDate.AddDays(1);
         }
 
         #endregion
