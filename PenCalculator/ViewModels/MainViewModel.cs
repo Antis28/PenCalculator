@@ -202,7 +202,7 @@ namespace PenCalculator.ViewModels
             PaymentForPeriod pp = p as PaymentForPeriod;
 
             var id = PaymentPurposes.IndexOf(SelectedPaymentPurposes);
-            if (id - 1 < 0)
+            if (id <= 0)
             {
                 return;
             }
@@ -224,7 +224,7 @@ namespace PenCalculator.ViewModels
             PaymentForPeriod pp = p as PaymentForPeriod;
 
             var id = PaymentPurposes.IndexOf(SelectedPaymentPurposes);
-            if (id + 1 == PaymentPurposes.Count || id == -1)
+            if (id < 0 || id + 1 >= PaymentPurposes.Count)
             {
                 return;
             }
@@ -329,10 +329,8 @@ namespace PenCalculator.ViewModels
         private void OnClearPeriodPaidCommandExecuted(object p)
         {
             var len = PaidOut.Count;
-            if (len > 0)
-            {
+            if (PaidOut.Count <= 1)
                 return;
-            }
 
             for (int i = PaidOut.Count - 1; i > 0; i--)
             {
@@ -340,7 +338,6 @@ namespace PenCalculator.ViewModels
             }
 
             SelectedPaidOut = PaidOut[0];
-            OnPropertyChanged(nameof(PaidOut));
         }
 
         #endregion
