@@ -207,7 +207,7 @@ namespace PenCalculator.ViewModels
                 return;
             }
 
-            (PaymentPurposes[id - 1], PaymentPurposes[id]) = (PaymentPurposes[id], PaymentPurposes[id - 1]);
+            PaymentPurposes.Move(id, id - 1);
             SelectedPaymentPurposes = PaymentPurposes[id - 1];
 
             OnPropertyChanged(nameof(PaymentPurposes));
