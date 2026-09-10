@@ -9,6 +9,7 @@ using System.Windows.Input;
 using System.Windows.Markup;
 using Newtonsoft.Json;
 using PenCalculator.Infrastructure.Services;
+using System.Runtime.Remoting.Contexts;
 
 namespace PenCalculator.ViewModels
 {
@@ -491,19 +492,70 @@ namespace PenCalculator.ViewModels
 
         public void LoadFromFile(string file)
         {
-            var jsonText = File.ReadAllText(file);
-            var dataFile = JsonConvert.DeserializeObject<DataFile>(jsonText);
+            if (string.IsNullOrWhiteSpace(file))
+                throw new ArgumentNullException(nameof(file));
+
+            string jsonText;
+            try
+            {
+                jsonText = File.ReadAllText(file);
+            }
+            catch (FileNotFoundException)
+            {
+                // Файл не найден — можно показать диалог, залогировать и т.д.
+                System.Windows.MessageBox.Show(
+                    $"Файл не найден:\n{file}",
+                    "Ошибка загрузки",
+                    System.Windows.MessageBoxButton.OK,
+                    System.Windows.MessageBoxImage.Warning);
+                return;
+            }
+            catch (IOException ex)
+            {
+                System.Windows.MessageBox.Show(
+                    $"Не удалось прочитать файл:\n{ex.Message}",
+                    "Ошибка загрузки",
+                    System.Windows.MessageBoxButton.OK,
+                    System.Windows.MessageBoxImage.Error);
+                return;
+            }
+
+            DataFile dataFile;
+            try
+            {
+                dataFile = JsonConvert.DeserializeObject<DataFile>(jsonText);
+            }
+            catch (JsonException ex)
+            {
+                System.Windows.MessageBox.Show(
+                    $"Файл повреждён или имеет неверный формат:\n{ex.Message}",
+                    "Ошибка загрузки",
+                    System.Windows.MessageBoxButton.OK,
+                    System.Windows.MessageBoxImage.Error);
+                return;
+            }
+
+            // Проверка целостности данных
+            if (dataFile == null ||
+                dataFile.PaidOut == null ||
+                dataFile.PaymentPurposes == null)
+            {
+                System.Windows.MessageBox.Show(
+                    "Файл не содержит необходимых данных.",
+                    "Ошибка загрузки",
+                    System.Windows.MessageBoxButton.OK,
+                    System.Windows.MessageBoxImage.Warning);
+                return;
+            }
 
             PaidOut.Clear();
             foreach (var item in dataFile.PaidOut)
-            {
                 PaidOut.Add(item);
-            }
+
             PaymentPurposes.Clear();
             foreach (var item in dataFile.PaymentPurposes)
-            {
                 PaymentPurposes.Add(item);
-            }
+
             FileName = dataFile.FileName;
 
             CalcDifferentSumm();
