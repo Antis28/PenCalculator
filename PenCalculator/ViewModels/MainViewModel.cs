@@ -328,7 +328,7 @@ namespace PenCalculator.ViewModels
         private void OnClearPeriodPaidCommandExecuted(object p)
         {
             var len = PaidOut.Count;
-            if (len == 1)
+            if (len > 0)
             {
                 return;
             }
