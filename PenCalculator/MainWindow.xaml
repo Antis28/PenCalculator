@@ -133,7 +133,7 @@
                             Visibility="{Binding IsAllVisible, Converter={StaticResource boolToVisibleConverter} }"
                             Text="Размер:" Margin="5,0" VerticalAlignment="Center"/>
                         <TextBox Visibility="{Binding IsAllVisible, Converter={StaticResource boolToVisibleConverter} }"  
-                                 Text="{Binding PaySizeFull,Converter={StaticResource moneyToStringConverter} , Mode=TwoWay}" 
+                                 Text="{Binding PaySizeFull, StringFormat={}{0:N0}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
                                  Margin="5,0" VerticalAlignment="Center" MinWidth="100"/>
                         <!--StringFormat={}{0:F2}-->
                         <TextBox Text="{Binding PaySizeOnPeriod,Converter={StaticResource moneyToStringConverter}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay }"   Margin="5,0" VerticalAlignment="Center" MinWidth="100"/>

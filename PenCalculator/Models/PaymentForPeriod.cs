@@ -6,7 +6,7 @@ namespace PenCalculator.Models
 {
     public class PaymentForPeriod : Model
     {
-        public int ID { get; set; }
+        public int Id { get; set; }
 
         private DateTime _startDate = new DateTime(2023, 03, 01);
         public DateTime StartDate
@@ -52,17 +52,17 @@ namespace PenCalculator.Models
 
         #region PaySizeFull : double - Полная назначенная сумма
         ///<summary>Полная назначенная сумма</summary>
-        private double _PaySizeFull;
+        private double _paySizeFull;
 
         ///<summary>Полная назначенная сумма</summary>
         public double PaySizeFull
         {
-            get => _PaySizeFull;
+            get => _paySizeFull;
             set
             {
-                Set(ref _PaySizeFull, value);
+                Set(ref _paySizeFull, value);
                 OnPropertyChanged(nameof(PaySizeOnPeriod));
-                OnPropertyChanged(nameof(PaySizeFullString));
+               // OnPropertyChanged(nameof(PaySizeFullString));
             }
         }
 
@@ -71,21 +71,24 @@ namespace PenCalculator.Models
 
         #region PaySizeOnPeriod : double - Сумма за период  
         ///<summary>Сумма за период </summary>
-        private double _PaySizeOnPeriod;
+        private double _paySizeOnPeriod;
 
         ///<summary>Сумма за период </summary>
         public double PaySizeOnPeriod
         {
             get
             {
-                if (_PaySizeFull <= 0)
-                    return _PaySizeOnPeriod;  // PaySizeFull пустой — ручной ввод
+                if (_paySizeFull <= 0)
+                    return _paySizeOnPeriod;  // PaySizeFull пустой — ручной ввод
 
                 return CalcPaySizeOnPeriod(); // PaySizeFull заполнен — пересчёт
             }
             set
             {
-                Set(ref _PaySizeOnPeriod, value);
+                // Если есть PaySizeFull — значение должно считаться, ручной ввод не нужен
+                if (_paySizeFull > 0) return;
+
+                Set(ref _paySizeOnPeriod, value);
             }
         }
         #endregion
@@ -93,25 +96,25 @@ namespace PenCalculator.Models
 
         #region PaySizeFullString : string - Весь период строкой
         ///<summary>Весь период строкой</summary>
-        public string PaySizeFullString => StringFormat.FormatCulture(_PaySizeFull);
+        //public string PaySizeFullString => StringFormat.FormatCulture(_paySizeFull);
 
         #endregion
 
 
         #region DateLength : string - Длинна периода в месяцах
         ///<summary>Длинна периода в месяцах</summary>
-        private string _DateLength;
+        private string _dateLength;
         ///<summary>Длинна периода в месяцах</summary>
-        public string DateLength { get => _DateLength; set => Set(ref _DateLength, value); }
+        public string DateLength { get => _dateLength; set => Set(ref _dateLength, value); }
         #endregion
 
         #region IsAllVisible : bool - видимость месяцев
         ///<summary>Видимость "Длинна периода в месяцах"</summary>
-        private bool _IsAllVisible = true;
+        private bool _isAllVisible = true;
         ///<summary>Видимость "Длинна периода в месяцах"</summary>
         public bool IsAllVisible { 
-            get => _IsAllVisible;
-            set => Set(ref _IsAllVisible, value);
+            get => _isAllVisible;
+            set => Set(ref _isAllVisible, value);
         }
         #endregion
 
@@ -163,7 +166,7 @@ namespace PenCalculator.Models
             paySizeOnPeriod += PaySizeFull * m;
 
 
-            //_PaySizeOnPeriod = paySizeOnPeriod;
+            //_paySizeOnPeriod = paySizeOnPeriod;
             return paySizeOnPeriod;
         }
 

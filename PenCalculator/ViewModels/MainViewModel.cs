@@ -381,7 +381,7 @@ namespace PenCalculator.ViewModels
             {
                 new PaymentForPeriod
                 {
-                    ID = 1,
+                    Id = 1,
                     StartDate = DateTime.Parse("01.03.2023"),
                     EndDate = DateTime.Parse("31.12.2023"),
                     PaySizeFull = 10_000
@@ -389,7 +389,7 @@ namespace PenCalculator.ViewModels
 
                 new PaymentForPeriod
                 {
-                    ID = 2,
+                    Id = 2,
                     StartDate = DateTime.Parse("01.01.2024"),
                     EndDate = DateTime.Parse("31.12.2024"),
                     PaySizeFull = 10_000
@@ -397,7 +397,7 @@ namespace PenCalculator.ViewModels
 
                 new PaymentForPeriod
                 {
-                    ID = 3,
+                    Id = 3,
                     StartDate = DateTime.Parse("01.01.2025"),
                     EndDate = DateTime.Parse("31.12.2025"),
                     PaySizeFull = 10_000
@@ -405,7 +405,7 @@ namespace PenCalculator.ViewModels
 
                 new PaymentForPeriod
                 {
-                    ID = 4,
+                    Id = 4,
                     StartDate = DateTime.Parse("01.01.2026"),
                     EndDate = lastDayLastMonth,
                     PaySizeFull = 10_000
@@ -413,7 +413,7 @@ namespace PenCalculator.ViewModels
 
                 //new PaymentForPeriod
                 //{
-                //    ID = 5,
+                //    Id = 5,
                 //    StartDate = DateTime.Parse("01.01.2024"),
                 //    EndDate = DateTime.Parse("31.03.2024"),
                 //    PaySizeFull = 10_000
@@ -421,7 +421,7 @@ namespace PenCalculator.ViewModels
 
                 //new PaymentForPeriod
                 //{
-                //    ID = 6,
+                //    Id = 6,
                 //    StartDate = DateTime.Parse("01.04.2024"),
                 //    EndDate = DateTime.Parse("31.07.2024"),
                 //    PaySizeFull = 10_000
@@ -429,7 +429,7 @@ namespace PenCalculator.ViewModels
 
                 //new PaymentForPeriod
                 //{
-                //    ID = 7,
+                //    Id = 7,
                 //    StartDate = DateTime.Parse("01.08.2024"),
                 //    EndDate = DateTime.Parse("31.12.2024"),
                 //    PaySizeFull = 10_000
@@ -437,7 +437,7 @@ namespace PenCalculator.ViewModels
 
                 //new PaymentForPeriod
                 //{
-                //    ID = 8,
+                //    Id = 8,
                 //    StartDate = DateTime.Parse("01.01.2025"),
                 //    EndDate = DateTime.Parse("28.02.2025"),
                 //    PaySizeFull = 10_000
