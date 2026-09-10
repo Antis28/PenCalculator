@@ -8,6 +8,7 @@
         FontSize="14"
         xmlns:vm="clr-namespace:PenCalculator.ViewModels"
         xmlns:c="clr-namespace:PenCalculator.Infrastructure.Converters"
+        xmlns:b="clr-namespace:PenCalculator.Infrastructure.Behaviors"
         xmlns:models="clr-namespace:PenCalculator.Models"
         xmlns:System="clr-namespace:System;assembly=mscorlib"
         Title="Pension calculator" Height="800" Width="900"
@@ -25,6 +26,7 @@
         <c:BoolToTextConverter x:Key="boolToTextConverter"/>
         <c:DoubleWithDotOrCommaConverter x:Key="doubleWithDotOrCommaConverter"/>
         
+
     </Window.Resources>
     <Grid Margin="3">
         <Grid.RowDefinitions>
@@ -78,7 +80,9 @@
                         <TextBlock Text="Размер:" Margin="5,0" VerticalAlignment="Center"/>
                         <TextBox Text="{Binding PaySizeFull,
                                         Converter={StaticResource doubleWithDotOrCommaConverter},
-                                        UpdateSourceTrigger=LostFocus}"
+                                        UpdateSourceTrigger=LostFocus,
+                                        Mode=TwoWay}"
+                                 b:CopyCleanBehavior.IsEnabled="True"
                                  Margin="5,0" VerticalAlignment="Center" MinWidth="100"/>
                         <!--StringFormat={}{0:F2}-->
                         <TextBox  Text="{Binding PaySizeOnPeriod,Converter={StaticResource moneyToStringConverter}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay }"   Margin="5,0" VerticalAlignment="Center" MinWidth="100"/>
@@ -139,9 +143,10 @@
                             Text="Размер:" Margin="5,0" VerticalAlignment="Center"/>
                         <TextBox Visibility="{Binding IsAllVisible, Converter={StaticResource boolToVisibleConverter} }"  
                                  Text="{Binding PaySizeFull,
-                                         Converter={StaticResource doubleWithDotOrCommaConverter},
+                                            Converter={StaticResource doubleWithDotOrCommaConverter},
                                             UpdateSourceTrigger=LostFocus, 
-                                    Mode=TwoWay}" 
+                                            Mode=TwoWay}"
+                                 b:CopyCleanBehavior.IsEnabled="True"
                                  Margin="5,0" VerticalAlignment="Center" MinWidth="100"/>
                         <!--StringFormat={}{0:F2}-->
                         <TextBox Text="{Binding PaySizeOnPeriod,Converter={StaticResource moneyToStringConverter}, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay }"   Margin="5,0" VerticalAlignment="Center" MinWidth="100"/>
