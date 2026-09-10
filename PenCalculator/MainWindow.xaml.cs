@@ -39,5 +39,24 @@ namespace PenCalculator
             //  allFilesViewModel?.LoadFilesInBase(files);
         }
 
+        private void TextBox_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                var tb = sender as TextBox;
+                if (tb != null)
+                {
+                    // Принудительно обновляем источник (запускает ConvertBack у конвертера)
+                    var be = BindingOperations.GetBindingExpression(tb, TextBox.TextProperty);
+                    be?.UpdateSource();
+
+                    // Опционально: можно сразу перевести фокус на следующее поле
+                    //var req = new TraversalRequest(FocusNavigationDirection.Next);
+                    //tb.MoveFocus(req);
+
+                    e.Handled = true; // чтобы Enter не делал перенос строки
+                }
+            }
+        }
     }
 }
