@@ -62,6 +62,7 @@ namespace PenCalculator.Models
             {
                 Set(ref _PaySizeFull, value);
                 OnPropertyChanged(nameof(PaySizeOnPeriod));
+                OnPropertyChanged(nameof(PaySizeFullString));
             }
         }
 
