@@ -1,4 +1,4 @@
-﻿using CV19Core.Infrastructure.Commands;
+using CV19Core.Infrastructure.Commands;
 using CV19Core.ViewModels.Base;
 using PenCalculator.Models;
 using System;
@@ -275,6 +275,44 @@ namespace PenCalculator.ViewModels
         }
 
         #endregion
+        #region MovePaidOutUpCommand
+        public ICommand MovePaidOutUpCommand { get; }
+        private bool CanMovePaidOutUpCommandExecute(object p) => true;
+
+        private void OnMovePaidOutUpCommandExecuted(object p)
+        {
+            var id = PaidOut.IndexOf(SelectedPaidOut);
+            if (id <= 0)
+            {
+                return;
+            }
+
+            PaidOut.Move(id, id - 1);
+            SelectedPaidOut = PaidOut[id - 1];
+
+            OnPropertyChanged(nameof(PaidOut));
+        }
+
+        #endregion
+        #region MovePaidOutDownCommand
+        public ICommand MovePaidOutDownCommand { get; }
+        private bool CanMovePaidOutDownCommandExecute(object p) => true;
+
+        private void OnMovePaidOutDownCommandExecuted(object p)
+        {
+            var id = PaidOut.IndexOf(SelectedPaidOut);
+            if (id < 0 || id + 1 >= PaidOut.Count)
+            {
+                return;
+            }
+
+            PaidOut.Move(id, id + 1);
+            SelectedPaidOut = PaidOut[id + 1];
+
+            OnPropertyChanged(nameof(PaidOut));
+        }
+
+        #endregion
         #region RemovePaidCommand
         public ICommand RemovePaidCommand { get; }
         private bool CanRemovePaidCommandExecute(object p) => PaidOut.Count > 1;
@@ -467,6 +505,10 @@ namespace PenCalculator.ViewModels
                 new LambdaCommand(OnAddPaidOutCommandExecuted, CanAddPaidOutCommandExecute);
             RemovePaidCommand =
                 new LambdaCommand(OnRemovePaidCommandExecuted, CanRemovePaidCommandExecute);
+            MovePaidOutDownCommand =
+                new LambdaCommand(OnMovePaidOutDownCommandExecuted, CanMovePaidOutDownCommandExecute);
+            MovePaidOutUpCommand =
+                new LambdaCommand(OnMovePaidOutUpCommandExecuted, CanMovePaidOutUpCommandExecute);
             CalculatePaidCommand =
                 new LambdaCommand(OnCalculatePaidCommandExecuted, CanCalculatePaidCommandExecute);
             SaveToFileCommand =

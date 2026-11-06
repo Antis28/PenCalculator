@@ -1,4 +1,4 @@
-﻿<Window x:Class="PenCalculator.MainWindow"
+<Window x:Class="PenCalculator.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -107,6 +107,8 @@
             <Button Style="{StaticResource PrimaryButton}" Width="100"  HorizontalAlignment="Center" Content="Добавить"  Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.AddPaidOutCommand}" Margin="5,5"/>
             <Button Style="{StaticResource DangerButton}" Width="100"   HorizontalAlignment="Center" Content="Удалить"    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.RemovePaidCommand}" Margin="5,5"/>
             <Button Style="{StaticResource BaseStyle}" Width="100"    HorizontalAlignment="Right" Content="Очистить"    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.ClearPeriodPaidCommand}" Margin="5,5" Background="White" Foreground="#FFFF0505" FontSize="16" FontWeight="Bold"/>
+            <Button Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.MovePaidOutDownCommand}" Width="40"   Style="{StaticResource DangerButton}" HorizontalAlignment="Center" Content="↓" Margin="5,5" Background="#FF3A6F00"/>
+            <Button Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.MovePaidOutUpCommand}" Width="40"   Style="{StaticResource DangerButton}" HorizontalAlignment="Center" Content="↑" Margin="5,5" Background="#FF00A151"/>
         </StackPanel>
         <ListBox Grid.Row="5" ItemsSource="{Binding PaidOut, UpdateSourceTrigger=PropertyChanged}" 
                  SelectedItem="{Binding SelectedPaidOut}" SelectionMode="Single">
