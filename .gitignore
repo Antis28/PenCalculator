@@ -361,3 +361,9 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# Project agent / docs files (not tracked by git)
+AGENTS.md
+README.md
+code-style.md
+systemPromt.md
