@@ -367,3 +367,6 @@ AGENTS.md
 README.md
 code-style.md
 systemPromt.md
+
+# IDE / editor config (IntelliJ IDEA, Rider)
+.idea/
