@@ -370,3 +370,6 @@ systemPromt.md
 
 # IDE / editor config (IntelliJ IDEA, Rider)
 .idea/
+/PenCalculator/AGENTS_0_1.md
+/PenCalculator/systemPromtForProject.md
+/PenCalculator/systemPromtForProject_2.md
