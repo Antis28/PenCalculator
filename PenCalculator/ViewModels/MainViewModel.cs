@@ -404,6 +404,36 @@ namespace PenCalculator.ViewModels
         #endregion
 
 
+        #region CopyToPaidOutCommand
+        public ICommand CopyToPaidOutCommand { get; }
+        private bool CanCopyToPaidOutCommandExecute(object p) => PaymentPurposes != null && PaymentPurposes.Count > 0;
+
+        private void OnCopyToPaidOutCommandExecuted(object p)
+        {
+            if (PaymentPurposes == null || PaymentPurposes.Count == 0)
+                return;
+
+            foreach (var period in PaymentPurposes)
+            {
+                var copy = new PaymentForPeriod
+                {
+                    Id = period.Id,
+                    StartDate = period.StartDate,
+                    EndDate = period.EndDate,
+                    PaySizeFull = 0,
+                    PaySizeOnPeriod = 0,
+                    DateLength = period.DateLength,
+                    IsAllVisible = false,
+                };
+                PaidOut.Add(copy);
+            }
+
+            OnPropertyChanged(nameof(PaidOut));
+        }
+
+        #endregion
+
+
         #region SaveToFileCommand
         public ICommand SaveToFileCommand { get; }
         private bool CanSaveToFileCommandExecute(object p) => true;
@@ -544,6 +574,8 @@ namespace PenCalculator.ViewModels
                 new LambdaCommand(OnClearPeriodCommandExecuted, CanClearPeriodCommandExecute);
             ClearPeriodPaidCommand =
                 new LambdaCommand(OnClearPeriodPaidCommandExecuted, CanClearPeriodPaidCommandExecute);
+            CopyToPaidOutCommand =
+                new LambdaCommand(OnCopyToPaidOutCommandExecuted, CanCopyToPaidOutCommandExecute);
 
             FileName =
                 DateTime.Now.ToString("yyyy-MM-dd_HH-mm_ss", CultureInfo.InvariantCulture);

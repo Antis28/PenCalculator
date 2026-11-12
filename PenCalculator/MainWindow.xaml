@@ -106,10 +106,11 @@
         </StackPanel>
         <StackPanel Grid.Row="4" Orientation="Horizontal">
             <Button Style="{StaticResource PrimaryButton}" Width="100"  HorizontalAlignment="Center" Content="Добавить"  Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.AddPaidOutCommand}" Margin="5,5"/>
-            <Button Style="{StaticResource DangerButton}" Width="100"   HorizontalAlignment="Center" Content="Удалить"    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.RemovePaidCommand}" Margin="5,5"/>
+            <Button Style="{StaticResource DangerButton}" Width="100"   HorizontalAlignment="Center" Content="Удалить"    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.RemovePaidCommand}" Margin="5,5"/>            
             <Button Style="{StaticResource BaseStyle}" Width="100"    HorizontalAlignment="Right" Content="Очистить"    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.ClearPeriodPaidCommand}" Margin="5,5" Background="White" Foreground="#FFFF0505" FontSize="16" FontWeight="Bold"/>
             <Button Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.MovePaidOutDownCommand}" Width="40"   Style="{StaticResource DangerButton}" HorizontalAlignment="Center" Content="↓" Margin="5,5" Background="#FF3A6F00"/>
             <Button Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.MovePaidOutUpCommand}" Width="40"   Style="{StaticResource DangerButton}" HorizontalAlignment="Center" Content="↑" Margin="5,5" Background="#FF00A151"/>
+            <Button Style="{StaticResource PrimaryButton}" Width="180"  HorizontalAlignment="Center" Content="Копировать в Выплачено" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.CopyToPaidOutCommand}" Margin="5,5"/>
         </StackPanel>
         <ListBox Grid.Row="5" ItemsSource="{Binding PaidOut, UpdateSourceTrigger=PropertyChanged}" 
                  SelectedItem="{Binding SelectedPaidOut}" SelectionMode="Single">
