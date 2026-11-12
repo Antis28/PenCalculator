@@ -52,6 +52,7 @@
                 <Button Style="{StaticResource DangerButton}" Width="100"    HorizontalAlignment="Center" Content="Удалить"    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.RemovePeriodCommand}" Margin="5,5"/>
                 
                 <Button Style="{StaticResource BaseStyle}" Width="100"    HorizontalAlignment="Right" Content="Очистить"    Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.ClearPeriodCommand}" Margin="5,5" Background="White" Foreground="#FFFF0505" FontSize="16" FontWeight="Bold"/>
+                <Button Style="{StaticResource BaseStyle}" Width="100"    HorizontalAlignment="Center" Content="Last Day" Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.LastDayCommand}" Margin="5,5"/>
 
                 <Button Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.MovePeriodDownCommand}" Width="40"   Style="{StaticResource DangerButton}" HorizontalAlignment="Center" Content="↓" Margin="5,5" Background="#FF3A6F00"/>
                 <Button Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType=Window}, Path=DataContext.MovePeriodUpCommand}" Width="40"   Style="{StaticResource DangerButton}" HorizontalAlignment="Center" Content="↑" Margin="5,5" Background="#FF00A151"/>

@@ -245,6 +245,31 @@ namespace PenCalculator.ViewModels
 
         #endregion
 
+        #region LastDayCommand
+        public ICommand LastDayCommand { get; }
+        private bool CanLastDayCommandExecute(object p) => SelectedPaymentPurposes != null;
+
+        private void OnLastDayCommandExecuted(object p)
+        {
+            if (SelectedPaymentPurposes == null)
+                return;
+
+            var now = DateTime.Now;
+            var lastDayOfMonth = new DateTime(now.Year, now.Month, DateTime.DaysInMonth(now.Year, now.Month));
+
+            SelectedPaymentPurposes.EndDate = lastDayOfMonth;
+
+            // Если EndDate оказался раньше StartDate — переносим StartDate на 1-е число текущего месяца
+            if (SelectedPaymentPurposes.EndDate < SelectedPaymentPurposes.StartDate)
+            {
+                SelectedPaymentPurposes.StartDate = new DateTime(now.Year, now.Month, 1);
+            }
+
+            OnPropertyChanged(nameof(SelectedPaymentPurposes));
+        }
+
+        #endregion
+
         #region AddPaidOutCommand
         public ICommand AddPaidOutCommand { get; }
         private bool CanAddPaidOutCommandExecute(object p) => true;
@@ -499,6 +524,8 @@ namespace PenCalculator.ViewModels
                 new LambdaCommand(OnMovePeriodDownCommandExecuted, CanMovePeriodDownCommandExecute);
             MovePeriodUpCommand =
                 new LambdaCommand(OnMovePeriodUpCommandExecuted, CanMovePeriodUpCommandExecute);
+            LastDayCommand =
+                new LambdaCommand(OnLastDayCommandExecuted, CanLastDayCommandExecute);
 
 
             AddPaidOutCommand =
